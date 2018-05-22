@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+pas=$(cat /media/shagbag913/Roms/.pas)
+# BUILD DIRECTORIES
+# AEX
+bdir1=/media/shagbag913/Roms/roms/aex
+# DU
+bdir2=/media/shagbag913/Roms/roms/du
+# DOT
+bdir3=/media/shagbag913/Roms/roms/dot
+### FUNCTIONS ###
+autopilot() {
+## AEX ##
+   time (cd $bdir1
+   clean
+   sync
+   lunchh
+   lunch aosp_sailfish-userdebug
+   make aex -j6)
+   curl -T /media/shagbag913/Roms/roms/aex/out/target/product/sailfish/AospExtended-v5*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+## DU ##
+   cd $bdir2
+   clean
+   sync
+   brunchh
+   curl -T /media/shagbag913/Roms/roms/du/out/target/product/sailfish/du_sailfish-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+## DOT ##
+   cd $bdir3
+   clean
+   sync
+   echo Copying theming patch
+   rm -rf /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
+   cp /media/shagbag913/Roms/patches/build_rro_package.mk /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
+   brunchh
+   curl -T /media/shagbag913/Roms/roms/du/out/target/product/sailfish/dotOS-O-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+}
+sync() {
+   echo Syncing up...
+   time (repo sync -j6 --no-tags --no-clone-bundle --force-sync -f -q)
+   if [ "$?" = "0" ]; then
+      echo Successfully synced!
+   else
+      echo Sync failed.
+   fi
+}
+clean() {
+   echo Cleaning outputs...
+   make clobber
+   if [ "$?" = "0" ]; then
+      echo Outputs cleaned successfully!
+   else
+      echo Outputs not cleaned.
+   fi
+}
+brunchh() {
+   time (echo Setting up build enviroment...
+   . build/envsetup.sh
+   echo Building...
+   brunch sailfish -j6)
+   if [ "$?" = "0" ]; then
+     echo Build successful!
+   else
+      echo Error: build not successful.
+   fi
+}
+lunchh() {
+   echo Setting up build enviroment...
+   . build/envsetup.sh
+   echo Building...
+}
+while [ "$1" != "" ]; do
+   case $1 in
+      --brunch ) brunchh;;
+      -s | --sync ) sync;;
+      -c | --clean ) clean;;
+      -a | --autopilot ) autopilot;;
+      * ) echo "Unknown command. Type 'build --help' for more info.";;
+   esac
+shift
+done
+### UPLOAD TO AFH ###
+
