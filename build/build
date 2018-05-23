@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# FETCH AFH PASSWORD #
 pas=$(cat /media/shagbag913/Roms/.pas)
 # BUILD DIRECTORIES
 # AEX
@@ -10,18 +11,30 @@ bdir3=/media/shagbag913/Roms/roms/dot
 ### FUNCTIONS ###
 autopilot() {
 ## AEX ##
-   time (cd $bdir1
+   cd $bdir1
    clean
    sync
    lunchh
    lunch aosp_sailfish-userdebug
-   make aex -j6)
+   echo "**Starting AEX Build**" | python3 ~/localscripts/dis.py
+   make aex -j6
+      if [ "$?" = "0" ]; then
+         echo "**AEX Built Successfully!**" | python3 ~/localscripts/dis.py
+      else
+         echo "*AEX Build Failed...*" | python3 ~/localscripts/dis.py
+      fi
    curl -T /media/shagbag913/Roms/roms/aex/out/target/product/sailfish/AospExtended-v5*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## DU ##
    cd $bdir2
    clean
    sync
+   echo "**Starting Dirty Unicorns Build**" | python3 ~/localscripts/dis.py
    brunchh
+      if [ "$?" = "0" ]; then
+         echo "**Dirty Unicorns Built Successfully!**" | python3 ~/localscripts/dis.py
+      else
+         echo "*Dirty Unicorns Build Failed...*" | python3 ~/localscripts/dis.py
+      fi
    curl -T /media/shagbag913/Roms/roms/du/out/target/product/sailfish/du_sailfish-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## DOT ##
    cd $bdir3
@@ -30,11 +43,17 @@ autopilot() {
    echo Copying theming patch
    rm -rf /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
    cp /media/shagbag913/Roms/patches/build_rro_package.mk /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
+   echo "**Starting dotOS Build**" | python3 ~/localscripts/dis.py
    brunchh
-   curl -T /media/shagbag913/Roms/roms/du/out/target/product/sailfish/dotOS-O-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+      if [ "$?" = "0" ]; then
+         echo "**dotOS Built Successfully!**" | python3 ~/localscripts/dis.py
+      else
+         echo "*dotOS Build Failed...*" | python3 ~/localscripts/dis.py
+      fi
+   curl -T /media/shagbag913/Roms/roms/dot/out/target/product/sailfish/dotOS-O-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 }
 sync() {
-   echo Syncing up...
+   echo Syncing up $1...
    time (repo sync -j6 --no-tags --no-clone-bundle --force-sync -f -q)
    if [ "$?" = "0" ]; then
       echo Successfully synced!
@@ -57,7 +76,7 @@ brunchh() {
    echo Building...
    brunch sailfish -j6)
    if [ "$?" = "0" ]; then
-     echo Build successful!
+     echo Build Successful!
    else
       echo Error: build not successful.
    fi
