@@ -8,49 +8,59 @@ bdir1=/media/shagbag913/Roms/roms/aex
 bdir2=/media/shagbag913/Roms/roms/du
 # DOT
 bdir3=/media/shagbag913/Roms/roms/dot
+# AICP
+bdir4=/media/shagbag913/Roms/roms/aicp
 ### FUNCTIONS ###
 autopilot() {
 ## AEX ##
    cd $bdir1
-   clean
    sync
    lunchh
    lunch aosp_sailfish-userdebug
-   echo "**Starting AEX Build**" | python3 ~/localscripts/dis.py
+   echo "**Building AospExtended**" | python3 ~/localscripts/dis.py
    make aex -j6
       if [ "$?" = "0" ]; then
-         echo "**AEX Built Successfully!**" | python3 ~/localscripts/dis.py
+         echo "*AospExtended Built Successfully!*" | python3 ~/localscripts/dis.py
       else
-         echo "*AEX Build Failed...*" | python3 ~/localscripts/dis.py
+         echo "*AospExtended Failed...*" | python3 ~/localscripts/dis.py
       fi
    curl -T /media/shagbag913/Roms/roms/aex/out/target/product/sailfish/AospExtended-v5*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## DU ##
    cd $bdir2
-   clean
    sync
-   echo "**Starting Dirty Unicorns Build**" | python3 ~/localscripts/dis.py
+   echo "**Building Dirty Unicorns**" | python3 ~/localscripts/dis.py
    brunchh
       if [ "$?" = "0" ]; then
-         echo "**Dirty Unicorns Built Successfully!**" | python3 ~/localscripts/dis.py
+         echo "*Dirty Unicorns Built Successfully!*" | python3 ~/localscripts/dis.py
       else
          echo "*Dirty Unicorns Build Failed...*" | python3 ~/localscripts/dis.py
       fi
    curl -T /media/shagbag913/Roms/roms/du/out/target/product/sailfish/du_sailfish-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## DOT ##
    cd $bdir3
-   clean
    sync
    echo Copying theming patch
    rm -rf /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
    cp /media/shagbag913/Roms/patches/build_rro_package.mk /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
-   echo "**Starting dotOS Build**" | python3 ~/localscripts/dis.py
+   echo "**Building dotOS**" | python3 ~/localscripts/dis.py
    brunchh
       if [ "$?" = "0" ]; then
-         echo "**dotOS Built Successfully!**" | python3 ~/localscripts/dis.py
+         echo "*dotOS Built Successfully!*" | python3 ~/localscripts/dis.py
       else
          echo "*dotOS Build Failed...*" | python3 ~/localscripts/dis.py
       fi
-   curl -T /media/shagbag913/Roms/roms/dot/out/target/product/sailfish/dotOS-O-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+   curl -T /media/shagbag913/Roms/roms/dot/out/target/product/sailfish/dotOS-O-*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+## AICP ##
+   cd $bdir4
+   sync
+   echo "**Building AICP**" | python3 ~/localscripts/dis.py
+   brunchh
+      if [ "$?" = "0" ]; then
+         echo "*AICP Built Successfully!*" | python3 ~/localscripts/dis.py
+      else
+         echo "*AICP Build Failed...*" | python3 ~/localscripts/dis.py
+      fi
+   curl -T /media/shagbag913/Roms/roms/aicp/out/target/product/sailfish/aicp_sailfish_o-13.1*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 }
 sync() {
    echo Syncing up $1...
@@ -63,12 +73,30 @@ sync() {
 }
 clean() {
    echo Cleaning outputs...
+   cd $bdir1
    make clobber
-   if [ "$?" = "0" ]; then
-      echo Outputs cleaned successfully!
-   else
-      echo Outputs not cleaned.
-   fi
+   cd $bdir2
+   make clobber
+   cd $bdir3
+   make clobber
+   echo Outputs cleaned.
+   echo "**Outputs cleaned**" | python3 ~/localscripts/dis.py
+
+}
+dust() {
+   echo Doing partial clean
+   cd $bdir1
+   rm -rf out/target/product/sailfish/AospExtended*.zip
+   echo AEX Dusted
+   cd $bdir2
+   rm -rf out/target/product/sailfish/du_sailfish-v*.zip
+   echo DU Dusted
+   cd $bdir3
+   rm -rf out/target/product/sailfish/dotOS-O-v*.zip
+   echo dotOS Dusted
+   cd $bdir4
+   rm -rf out/target/product/sailfish/aicp_sailfish*.zip
+   echo AICP Dusted
 }
 brunchh() {
    time (echo Setting up build enviroment...
@@ -92,7 +120,8 @@ while [ "$1" != "" ]; do
       -s | --sync ) sync;;
       -c | --clean ) clean;;
       -a | --autopilot ) autopilot;;
-      * ) echo "Unknown command. Type 'build --help' for more info.";;
+      -u | --upload ) curl -T $2 ftp://shagbag913:$pas@uploads.androidfilehost.com;;
+      -d | --dust ) dust;;
    esac
 shift
 done
