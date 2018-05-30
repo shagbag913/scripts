@@ -9,14 +9,13 @@ image=image-${folder}.zip
 device=sailfish
 savedir=/media/shagbag913/Roms/factimages/${folder}-images
 mkdir -p $savedir
+mkdir -p $dir
 cd $dir
 wget $url
 unzip $ZIP
 cd $folder
 unzip $image
-cp boot.img $savedir/${device}-boot-$(date +%b-%Y)
-cp vendor.img $savedir/${device}-vendor-$(date +%b-%Y)
-cp radio-${device}*.img $savedir/${device}-radio-$(date +%b-%Y)
-cp bootloader-${device}*.img $savedir/${device}-bootloader-$(date +%b-%Y)
-rm -rf $dir/$folder
+cp vendor.img $savedir/${device}-vendor-$(date +%b-%Y).img
+cp radio-${device}*.img $savedir/${device}-radio-$(date +%b-%Y).img
+cp bootloader-${device}*.img $savedir/${device}-bootloader-$(date +%b-%Y).img
 rm -rf $dir/$ZIP

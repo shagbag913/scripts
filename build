@@ -80,6 +80,8 @@ clean() {
    make clobber
    cd $bdir3
    make clobber
+   cd $bdir4
+   make clobber
    echo Outputs cleaned.
    echo "**Outputs cleaned**" | python3 ~/localscripts/dis.py
 
@@ -103,7 +105,7 @@ brunchh() {
    time (echo Setting up build enviroment...
    . build/envsetup.sh
    echo Building...
-   brunch sailfish)
+   echo brunch sailfish)
    if [ "$?" = "0" ]; then
      echo Build Successful!
    else
