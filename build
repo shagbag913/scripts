@@ -13,54 +13,56 @@ bdir4=/media/shagbag913/Roms/roms/aicp
 ### FUNCTIONS ###
 autopilot() {
 ## AEX ##
-   cd $bdir1
-   sync
-   lunchh
-   lunch aosp_sailfish-userdebug
-   echo "**Building AospExtended**" | python3 ~/localscripts/dis.py
-   make aex -j6
-      if [ "$?" = "0" ]; then
-         echo "*AospExtended Built Successfully!*" | python3 ~/localscripts/dis.py
-      else
-         echo "*AospExtended Failed...*" | python3 ~/localscripts/dis.py
-      fi
-   curl -T /media/shagbag913/Roms/roms/aex/out/target/product/sailfish/AospExtended-v5*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+#   cd $bdir1
+ #  sync
+  # lunchh
+#   lunch aosp_sailfish-userdebug
+ #  echo "**Building AospExtended**" | python3 ~/localscripts/dis.py
+  # make aex -j6
+#      if [ "$?" = "0" ]; then
+ #        echo "*AospExtended Built Successfully!*" | python3 ~/localscripts/dis.py
+  #    else
+   #      echo "*AospExtended Failed...*" | python3 ~/localscripts/dis.py
+    #  fi
+#   curl -T /media/shagbag913/Roms/roms/aex/out/target/product/sailfish/AospExtended-v5*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## DU ##
-   cd $bdir2
-   sync
-   echo "**Building Dirty Unicorns**" | python3 ~/localscripts/dis.py
-   brunchh
-      if [ "$?" = "0" ]; then
-         echo "*Dirty Unicorns Built Successfully!*" | python3 ~/localscripts/dis.py
-      else
-         echo "*Dirty Unicorns Build Failed...*" | python3 ~/localscripts/dis.py
-      fi
-   curl -T /media/shagbag913/Roms/roms/du/out/target/product/sailfish/du_sailfish-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+#   cd $bdir2
+ #  sync
+  # echo "**Building Dirty Unicorns**" | python3 ~/localscripts/dis.py
+#   brunchh
+ #     if [ "$?" = "0" ]; then
+  #       echo "*Dirty Unicorns Built Successfully!*" | python3 ~/localscripts/dis.py
+   #   else
+    #     echo "*Dirty Unicorns Build Failed...*" | python3 ~/localscripts/dis.py
+#      fi
+ #  curl -T /media/shagbag913/Roms/roms/du/out/target/product/sailfish/du_sailfish-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## DOT ##
-   cd $bdir3
-   sync
-   echo Copying theming patch
-   rm -rf /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
-   cp /media/shagbag913/Roms/patches/build_rro_package.mk /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
-   echo "**Building dotOS**" | python3 ~/localscripts/dis.py
-   brunchh
-      if [ "$?" = "0" ]; then
-         echo "*dotOS Built Successfully!*" | python3 ~/localscripts/dis.py
-      else
-         echo "*dotOS Build Failed...*" | python3 ~/localscripts/dis.py
-      fi
-   curl -T /media/shagbag913/Roms/roms/dot/out/target/product/sailfish/dotOS-O-*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+#   cd $bdir3
+ #  sync
+  # echo Copying theming patch
+#   rm -rf /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
+ #  cp /media/shagbag913/Roms/patches/build_rro_package.mk /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
+#   echo "**Building dotOS**" | python3 ~/localscripts/dis.py
+ #  brunchh
+  #    if [ "$?" = "0" ]; then
+   #      echo "*dotOS Built Successfully!*" | python3 ~/localscripts/dis.py
+    #  else
+#         echo "*dotOS Build Failed...*" | python3 ~/localscripts/dis.py
+ #     fi
+  # curl -T /media/shagbag913/Roms/roms/dot/out/target/product/sailfish/dotOS-O-*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## AICP ##
    cd $bdir4
    sync
    echo "**Building AICP**" | python3 ~/localscripts/dis.py
-   brunchh
+   . build/envsetup.sh
+   brunch sailfish
       if [ "$?" = "0" ]; then
          echo "*AICP Built Successfully!*" | python3 ~/localscripts/dis.py
       else
          echo "*AICP Build Failed...*" | python3 ~/localscripts/dis.py
       fi
    curl -T /media/shagbag913/Roms/roms/aicp/out/target/product/sailfish/aicp_sailfish_o-13.1*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+# TODO: move fail checks below curl for better accuracy
 }
 sync() {
    echo Syncing up $1...
