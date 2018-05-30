@@ -105,7 +105,7 @@ brunchh() {
    time (echo Setting up build enviroment...
    . build/envsetup.sh
    echo Building...
-   echo brunch sailfish)
+   brunch sailfish)
    if [ "$?" = "0" ]; then
      echo Build Successful!
    else
