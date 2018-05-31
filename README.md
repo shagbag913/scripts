@@ -33,5 +33,6 @@ saved to.
 
 After everything is configured, Here is how you use it. The syntax of the command is `./getimages <url-of-factory-image>` To get the factory image url, just goto 
 googles factory image page and copy the download link by right clicking `link` on the factory image you want to download.
-![alt text](https://imgur.com/4XbQRpw "Factory Image URL")
 
+
+![Imgur](https://i.imgur.com/4XbQRpw.png)
