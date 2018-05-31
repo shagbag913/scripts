@@ -17,8 +17,15 @@ is because it has to mount the system.img to access what is inside of it.
 This script downloads the factory image and extracts the bootloader, radio, and vendor image from it.
 After it extracts the images, it copies them to wherever you set `$savedir` and adds your device and the month/year
 to the name of the images.
-Before you use this, there is some configuration to be done. Find the line `device=sailfish` and replace sailfish 
+Before you use this, there is some configuration to be done: 
+
+
+Find the line `device=sailfish` and replace sailfish 
 with the name of your device.
+
+
 You also need to set `dir` to where you want the factory image to be downloaded to.
+
+
 The last thing to be done is you need to set `savedir` to where you want the radio, bootloader, and vendor images to be
 saved to.
