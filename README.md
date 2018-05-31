@@ -9,7 +9,7 @@ and `curl -T <file> <ftp link>`.
 
 ### **buildid**
 This script just grabs the build id and release key from the system.img in the factory image.
-To use it all you need to put the script in the same directory as the system.img from the factory
+To use it, put the script in the same directory as the system.img from the factory
 image, then simply type `./buildid` in the terminal. It will ask you for the superuser password, this
 is because it has to mount the system.img to access what is inside of it.
 
