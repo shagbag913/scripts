@@ -1,13 +1,20 @@
 #!/bin/bash
 
 set -e
+# dir is where you want the factory image to be downloaded too.
 dir=/media/shagbag913/Roms/factimages
+
+# savedir is where you want the vendor, bootloader, and radio images to be saved too.
+# if you name it 'images-${folder}', it will be named 'images-<build-id>'.
+savedir=/media/shagbag913/Roms/factimages/images-${folder}
+
+# Your device codename.
+device=sailfish
+
 url=$1
 ZIP=$(basename ${url})
 folder=$(echo ${ZIP} | awk -F-factory '{print $1}')
 image=image-${folder}.zip
-device=sailfish
-savedir=/media/shagbag913/Roms/factimages/images-${folder}
 mkdir -p $savedir
 mkdir -p $dir
 cd $dir
