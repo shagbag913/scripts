@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+simg2img system.img system.raw
+mkdir system
+su -c 'mount system.raw system
+awk '/ro.bootimage.build.fingerprint/' system/default.prop | sed -e 's/ro.bootimage.build.fingerprint=//g'
+umount system'
+rm -rf system
+rm -rf $(pwd)/system.raw
