@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # FETCH AFH PASSWORD #
 pas=$(cat /media/shagbag913/Roms/.pas)
+
+out=out/target/product/sailfish
+
 # BUILD DIRECTORIES
-# AEX
 bdir1=/media/shagbag913/Roms/roms/aex
-# DU
 bdir2=/media/shagbag913/Roms/roms/du
-# DOT
 bdir3=/media/shagbag913/Roms/roms/dot
-# AICP
 bdir4=/media/shagbag913/Roms/roms/aicp
+
 ### FUNCTIONS ###
 autopilot() {
 ## AEX ##
@@ -24,7 +24,7 @@ autopilot() {
       else
          echo "*AospExtended Failed...*" | python3 ~/localscripts/dis.py
       fi
-   curl -T /media/shagbag913/Roms/roms/aex/out/target/product/sailfish/AospExtended-v5*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+   curl -T `ls -rt ${out}/AospExtended-v5*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## DU ##
    cd $bdir2
    sync
@@ -35,7 +35,7 @@ autopilot() {
       else
          echo "*Dirty Unicorns Build Failed...*" | python3 ~/localscripts/dis.py
       fi
-   curl -T /media/shagbag913/Roms/roms/du/out/target/product/sailfish/du_sailfish-v*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+   curl -T `ls -rt ${out}/du_sailfish-v*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## DOT ##
    cd $bdir3
    sync
@@ -49,7 +49,7 @@ autopilot() {
       else
          echo "*dotOS Build Failed...*" | python3 ~/localscripts/dis.py
       fi
-   curl -T /media/shagbag913/Roms/roms/dot/out/target/product/sailfish/dotOS-O-*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
+   curl -T `ls -rt ${out}/dotOS-O-*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
 ## AICP ##
    cd $bdir4
    sync
@@ -60,8 +60,7 @@ autopilot() {
       else
          echo "*AICP Build Failed...*" | python3 ~/localscripts/dis.py
       fi
-   curl -T /media/shagbag913/Roms/roms/aicp/out/target/product/sailfish/aicp_sailfish_o-13.1*.zip ftp://shagbag913:$pas@uploads.androidfilehost.com
-# TODO: move fail checks below curl for better accuracy
+   curl -T `ls -rt ${out}/aicp_sailfish_o-13.1*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
 }
 sync() {
    echo Syncing up $1...
@@ -86,21 +85,6 @@ clean() {
    echo "**Outputs cleaned**" | python3 ~/localscripts/dis.py
 
 }
-dust() {
-   echo Doing partial clean
-   cd $bdir1
-   rm -rf out/target/product/sailfish/AospExtended*.zip
-   echo AEX Dusted
-   cd $bdir2
-   rm -rf out/target/product/sailfish/du_sailfish-v*.zip
-   echo DU Dusted
-   cd $bdir3
-   rm -rf out/target/product/sailfish/dotOS-O-v*.zip
-   echo dotOS Dusted
-   cd $bdir4
-   rm -rf out/target/product/sailfish/aicp_sailfish*.zip
-   echo AICP Dusted
-}
 brunchh() {
    time (echo Setting up build enviroment...
    . build/envsetup.sh
@@ -124,7 +108,6 @@ while [ "$1" != "" ]; do
       -c | --clean ) clean;;
       -a | --autopilot ) autopilot;;
       -u | --upload ) curl -T $2 ftp://shagbag913:$pas@uploads.androidfilehost.com;;
-      -d | --dust ) dust;;
    esac
 shift
 done
