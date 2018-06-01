@@ -5,7 +5,7 @@ These are my personal scripts. Feel free to modify/steal/call yours, I don't car
 ### **build**
 This is simply a script that automatically builds all of my ROMs. It also shortens up some of the longer 
 commands used when building, such as `repo sync -j6 --no-tags --no-clone-bundle --force-sync -f -q`,
-and `curl -T <file> <ftp link>`.
+and `curl -T <file> <ftp link>`. It also uploads them to afh automatically.
 
 ### **buildid**
 This script just grabs the build id and release key from the system.img in the factory image.
