@@ -8,7 +8,6 @@ out=out/target/product/sailfish
 bdir1=/media/shagbag913/Roms/roms/aex
 bdir2=/media/shagbag913/Roms/roms/du
 bdir3=/media/shagbag913/Roms/roms/dot
-bdir4=/media/shagbag913/Roms/roms/aicp
 
 ### FUNCTIONS ###
 autopilot() {
@@ -50,17 +49,6 @@ autopilot() {
          echo "*dotOS Build Failed...*" | python3 ~/localscripts/dis.py
       fi
    curl -T `ls -rt ${out}/dotOS-O-*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
-## AICP ##
-   cd $bdir4
-   sync
-   echo "**Building AICP**" | python3 ~/localscripts/dis.py
-   brunchh
-      if [ "$?" = "0" ]; then
-         echo "*AICP Built Successfully!*" | python3 ~/localscripts/dis.py
-      else
-         echo "*AICP Build Failed...*" | python3 ~/localscripts/dis.py
-      fi
-   curl -T `ls -rt ${out}/aicp_sailfish_o-13.1*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
 }
 sync() {
    echo Syncing up $1...
@@ -78,8 +66,6 @@ clean() {
    cd $bdir2
    make clobber
    cd $bdir3
-   make clobber
-   cd $bdir4
    make clobber
    echo Outputs cleaned.
    echo "**Outputs cleaned**" | python3 ~/localscripts/dis.py
