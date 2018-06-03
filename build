@@ -126,7 +126,7 @@ autopilot() {
     if [[ $autopilotclean = yes ]]; then clean; fi
     cd $romdir1
     sync
-    if [[ $disnotif = yes ]]; then echo "**${name1} Build Started.**" | python3 ~/localscripts/dis.py; fi
+    if [[ $disnotif = yes ]]; then echo "**${name1} Build Started.**" | ${discmd}; fi
     DATE_START1=$(date +"%s")
     . build/envsetup.sh
     lunch aosp_sailfish-userdebug
@@ -134,34 +134,34 @@ autopilot() {
     DATE_END1=$(date +"%s")
     DIFF1=$(($DATE_END1 - $DATE_START1))
         if [[ $rom1 = successful ]]; then
-           echo "*${name1} Built Succesfully in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+           echo "*${name1} Built Succesfully in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}; fi
         else 
-            echo "*${name1} Build Failed in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+            echo "*${name1} Build Failed in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}; fi
         fi
     cd $romdir2
     sync
-    if [[ $disnotif = yes ]]; then echo "**${name2} Build Started.**" | python3 ~/localscripts/dis.py; fi
+    if [[ $disnotif = yes ]]; then echo "**${name2} Build Started.**" | ${discmd}; fi
     DATE_START2=$(date +"%s")
     brinch && rom2=successful
     DATE_END2=$(date +"%s")
     DIFF2=$(($DATE_END2 - $DATE_START2))
         if [[ $rom2 = successful ]]; then
-            echo "*${name2} Built Succesfully in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+            echo "*${name2} Built Succesfully in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}; fi
         else
-            echo "*${name2} Build Failed in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+            echo "*${name2} Build Failed in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}; fi
         fi
     cd $romdir3
     sync
     if [[ $dotthemepatch = yes ]]; then dtp; fi
-    if [[ $disnotif = yes ]]; then echo "**${name3} Build Started.**" | python3 ~/localscripts/dis.py; fi
+    if [[ $disnotif = yes ]]; then echo "**${name3} Build Started.**" | ${discmd}; fi
     DATE_START3=$(date +"%s")
     brinch && rom3=successful
     DATE_END3=$(date +"%s")
     DIFF3=$(($DATE_END3 - $DATE_START3))
         if [[ $rom3 = successful ]]; then
-            echo "*${name3} Built Succesfully in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+            echo "*${name3} Built Succesfully in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}; fi
         else
-            echo "*${name3} Build Failed in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+            echo "*${name3} Build Failed in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}; fi
         fi
     gdrive
 }
