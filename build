@@ -1,99 +1,166 @@
-#!/usr/bin/env bash
-# FETCH AFH PASSWORD #
-pas=$(cat /media/shagbag913/Roms/.pas)
+#    _____ __ __   ____   ____  ____    ____   ____  _____     ____   __ __  ____  _      ___         _____   __  ____   ____  ____  ______  
+#   / ___/|  |  | /    | /    ||    \  /    | /    |/ ___/    |    \ |  |  ||    || |    |   \       / ___/  /  ]|    \ |    ||    \|      | 
+#  (   \_ |  |  ||  o  ||   __||  o  )|  o  ||   __(   \_     |  o  )|  |  | |  | | |    |    \     (   \_  /  / |  D  ) |  | |  o  )      | 
+#   \__  ||  _  ||     ||  |  ||     ||     ||  |  |\__  |    |     ||  |  | |  | | |___ |  D  |     \__  |/  /  |    /  |  | |   _/|_|  |_|
+#   /  \ ||  |  ||  _  ||  |_ ||  O  ||  _  ||  |_ |/  \ |    |  O  ||  :  | |  | |     ||     |     /  \ /   \_ |    \  |  | |  |    |  |  
+#   \    ||  |  ||  |  ||     ||     ||  |  ||     |\    |    |     ||     | |  | |     ||     |     \    \     ||  .  \ |  | |  |    |  |  
+#    \___||__|__||__|__||___,_||_____||__|__||___,_| \___|    |_____| \__,_||____||_____||_____|      \___|\____||__|\_||____||__|    |__|  
+#                                                                                                                                           
+#   This is just a script I use to my build my stuff. I made it so it is easy to modify and add your own ROM's. 
+#
 
-out=out/target/product/sailfish
+#!/bin/bash
 
-# BUILD DIRECTORIES
-bdir1=/media/shagbag913/Roms/roms/aex
-bdir2=/media/shagbag913/Roms/roms/du
-bdir3=/media/shagbag913/Roms/roms/dot
+## CONFIGURATION
+# Device codename
+device1=sailfish
 
-### FUNCTIONS ###
-autopilot() {
-## AEX ##
-   cd $bdir1
-   sync
-   lunchh
-   lunch aosp_sailfish-userdebug
-   echo "**Building AospExtended**" | python3 ~/localscripts/dis.py
-   make aex -j6
-      if [ "$?" = "0" ]; then
-         echo "*AospExtended Built Successfully!*" | python3 ~/localscripts/dis.py
-      else
-         echo "*AospExtended Failed...*" | python3 ~/localscripts/dis.py
-      fi
-   curl -T `ls -rt ${out}/AospExtended-v5*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
-## DU ##
-   cd $bdir2
-   sync
-   echo "**Building Dirty Unicorns**" | python3 ~/localscripts/dis.py
-   brunchh
-      if [ "$?" = "0" ]; then
-         echo "*Dirty Unicorns Built Successfully!*" | python3 ~/localscripts/dis.py
-      else
-         echo "*Dirty Unicorns Build Failed...*" | python3 ~/localscripts/dis.py
-      fi
-   curl -T `ls -rt ${out}/du_sailfish-v*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
-## DOT ##
-   cd $bdir3
-   sync
-   echo Copying theming patch
-   rm -rf /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
-   cp /media/shagbag913/Roms/patches/build_rro_package.mk /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
-   echo "**Building dotOS**" | python3 ~/localscripts/dis.py
-   brunchh
-      if [ "$?" = "0" ]; then
-         echo "*dotOS Built Successfully!*" | python3 ~/localscripts/dis.py
-      else
-         echo "*dotOS Build Failed...*" | python3 ~/localscripts/dis.py
-      fi
-   curl -T `ls -rt ${out}/dotOS-O-*.zip | tail -1` ftp://shagbag913:$pas@uploads.androidfilehost.com
+# Google Drive support. This uses a tool called 'grive'. This must be installed on your PC. Check this page out for more info: 
+# https://www.fossmint.com/grive2-google-drive-client-for-linux/
+usegdrive=yes
+
+# Gdrive Directories
+gdrivetop=/media/shagbag913/Roms/gdrive
+gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
+gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
+gdir3=/media/shagbag913/Roms/gdrive/Roms/dotOS
+
+# Fixes and discord notifications
+disnotif=yes
+dotthemepatch=yes
+ 
+# wether or not autopilot builds are clean or not, default is no.
+autopilot=
+
+# Here when it asks for the name of your ROM, this means part of the ROM zip's name that does not change. For example, if the final ROM zip is named 
+# "AospExtended-v5.5-sailfish-20180602-0231-UNOFFICIAL", what I would put for the ROM name would be "AospExtended-v5.5-sailfish", this way the ROMS can be autouploaded.
+
+# Rom #1 Directory AND name of rom.
+romdir1=/media/shagbag913/Roms/roms/aex
+name1="Aosp Extended"
+romzip1="AospExtended-v5.5-sailfish"
+
+# Rom #2 Directory AND name of rom.
+romdir2=/media/shagbag913/Roms/roms/du
+name2="Dirty Unicorns"
+romzip2=du_sailfish-v12
+
+# Rom #3 Directory AND name of rom.
+romdir3=/media/shagbag913/Roms/roms/dot
+name3=dotOS
+romzip3=dotOS-O-v
+
+# Number of threads to use
+j=$(($(nproc --all) * 2 - 2))
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RESTORE='\e[0m'
+
+out="out/target/product/${device1}"
+
+# Functions
+splash() {
+echo ""
+echo -e " You are using ${RED}ShagBag913s${RESTORE} bash script."
+echo ""
 }
 sync() {
-   echo Syncing up $1...
-   time (repo sync -j6 --no-tags --no-clone-bundle --force-sync -f -q)
-   if [ "$?" = "0" ]; then
-      echo Successfully synced!
-   else
-      echo Sync failed.
-   fi
+    echo -e ""
+    echo -e "${RED}Syncing Up.${RESTORE}"
+    repo sync -j6 --no-tags --no-clone-bundle --force-sync -f -q
+        if [[ $? = 0 ]]; then
+            echo -e "${BLUE}Sync Successful!${RESTORE}"
+        else
+            echo -e "${GREEN}Sync ${RED}Failed!${RESTORE}"
+        fi
 }
 clean() {
-   echo Cleaning outputs...
-   cd $bdir1
-   make clobber
-   cd $bdir2
-   make clobber
-   cd $bdir3
-   make clobber
-   echo Outputs cleaned.
-   echo "**Outputs cleaned**" | python3 ~/localscripts/dis.py
-
+    echo -e ""
+    echo -e "${RED}Makin Clobber.${RESTORE}"
+    cd $romdir1
+    make clobber
+    cd $romdir2
+    make clobber
+    cd $romdir3
+    make clobber
 }
-brunchh() {
-   time (echo Setting up build enviroment...
-   . build/envsetup.sh
-   echo Building...
-   brunch sailfish)
-   if [ "$?" = "0" ]; then
-     echo Build Successful!
-   else
-      echo Error: build not successful.
-   fi
+brinch() {
+    echo -e ""
+    echo -e "${RED}Brunching.${RESTORE}"
+    . build/envsetup.sh
+    brunch ${device1}
 }
-lunchh() {
-   echo Setting up build enviroment...
-   . build/envsetup.sh
-   echo Building...
+linch() {
+    echo -e ""
+    echo -e "${RED}Lunching.${RESTORE}"
+    . build/envsetup.sh
 }
+gdrive() {
+    if [[ $usegdrive = yes ]]; then
+        cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
+        cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
+        cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
+	cd ${gdrivetop} && grive
+    fi
+}
+autopilot() {
+    if [[ $autopilotclean = yes ]]; then clean; fi
+    cd $romdir1
+    sync
+    if [[ $disnotif = yes ]]; then echo "**${name1} Build Started.**" | python3 ~/localscripts/dis.py; fi
+    DATE_START1=$(date +"%s")
+    . build/envsetup.sh
+    lunch aosp_sailfish-userdebug
+    make aex -j6 && rom1=successful
+    DATE_END1=$(date +"%s")
+    DIFF1=$(($DATE_END1 - $DATE_START1))
+        if [[ $rom1 = successful ]]; then
+           echo "*${name1} Built Succesfully in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+        else 
+            echo "*${name1} Build Failed in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+        fi
+    cd $romdir2
+    sync
+    if [[ $disnotif = yes ]]; then echo "**${name2} Build Started.**" | python3 ~/localscripts/dis.py; fi
+    DATE_START2=$(date +"%s")
+    brinch && rom2=successful
+    DATE_END2=$(date +"%s")
+    DIFF2=$(($DATE_END2 - $DATE_START2))
+        if [[ $rom2 = successful ]]; then
+            echo "*${name2} Built Succesfully in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+        else
+            echo "*${name2} Build Failed in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+        fi
+    cd $romdir3
+    sync
+    if [[ $dotthemepatch = yes ]]; then dtp; fi
+    if [[ $disnotif = yes ]]; then echo "**${name3} Build Started.**" | python3 ~/localscripts/dis.py; fi
+    DATE_START3=$(date +"%s")
+    brinch && rom3=successful
+    DATE_END3=$(date +"%s")
+    DIFF3=$(($DATE_END3 - $DATE_START3))
+        if [[ $rom3 = successful ]]; then
+            echo "*${name3} Built Succesfully in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+        else
+            echo "*${name3} Build Failed in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | python3 ~/localscripts/dis.py
+        fi
+    gdrive
+}
+dtp() {
+    rm -rf /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
+    cp /media/shagbag913/Roms/patches/build_rro_package.mk /media/shagbag913/Roms/roms/dot/build/core/build_rro_package.mk
+}    
 while [ "$1" != "" ]; do
    case $1 in
-      --brunch ) brunchh;;
       -s | --sync ) sync;;
       -c | --clean ) clean;;
       -a | --autopilot ) autopilot;;
-      -u | --upload ) curl -T $2 ftp://shagbag913:$pas@uploads.androidfilehost.com;;
    esac
 shift
 done
+
+# TODO: Clean up dot theme patch, add better support for lunch.
+echo `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
