@@ -11,7 +11,7 @@
 
 #!/bin/bash
 
-## CONFIGURATION
+### CONFIGURATION ###
 # Device codename
 device1=sailfish
 
@@ -32,7 +32,7 @@ dotthemepatch=yes
 # wether or not autopilot builds are clean or not, default is no.
 autopilot=
 
-# Here when it asks for the name of your ROM, this means part of the ROM zip's name that does not change. For example, if the final ROM zip is named 
+# Here when it asks for "romzip", this means part of the ROM zip's name that does not change. For example, if the final ROM zip is named 
 # "AospExtended-v5.5-sailfish-20180602-0231-UNOFFICIAL", what I would put for the ROM name would be "AospExtended-v5.5-sailfish", this way the ROMS can be autouploaded.
 
 # Rom #1 Directory AND name of rom.
@@ -86,12 +86,13 @@ sync() {
 clean() {
     echo -e ""
     echo -e "${RED}Makin Clobber.${RESTORE}"
-    cd $romdir1
-    make clobber
-    cd $romdir2
-    make clobber
-    cd $romdir3
-    make clobber
+#    cd $romdir1
+#    make clobber
+#    cd $romdir2
+#    make clobber
+#    cd $romdir3
+#    make clobber
+    if [[ $disnotif = yes ]]; then echo "Outputs Cleaned" | ${discmd}; fi
 }
 brinch() {
     echo -e ""
@@ -134,9 +135,9 @@ autopilot() {
     DATE_END1=$(date +"%s")
     DIFF1=$(($DATE_END1 - $DATE_START1))
         if [[ $rom1 = successful ]]; then
-           echo "*${name1} Built Succesfully in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}; fi
+           echo "*${name1} Built Succesfully in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}
         else 
-            echo "*${name1} Build Failed in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}; fi
+            echo "*${name1} Build Failed in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}
         fi
     cd $romdir2
     sync
@@ -146,9 +147,9 @@ autopilot() {
     DATE_END2=$(date +"%s")
     DIFF2=$(($DATE_END2 - $DATE_START2))
         if [[ $rom2 = successful ]]; then
-            echo "*${name2} Built Succesfully in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}; fi
+            echo "*${name2} Built Succesfully in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
         else
-            echo "*${name2} Build Failed in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}; fi
+            echo "*${name2} Build Failed in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
         fi
     cd $romdir3
     sync
@@ -159,9 +160,9 @@ autopilot() {
     DATE_END3=$(date +"%s")
     DIFF3=$(($DATE_END3 - $DATE_START3))
         if [[ $rom3 = successful ]]; then
-            echo "*${name3} Built Succesfully in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}; fi
+            echo "*${name3} Built Succesfully in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}
         else
-            echo "*${name3} Build Failed in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}; fi
+            echo "*${name3} Build Failed in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}
         fi
     gdrive
 }
