@@ -133,7 +133,7 @@ autopilot() {
     make aex -j6 && rom1=successful
     DATE_END1=$(date +"%s")
     DIFF1=$(($DATE_END1 - $DATE_START1))
-        if [[ $rom1 = successful ]]; then
+        if [[ $rom1 = successful && $disnotif = yes ]]; then
            echo "*Build Successful in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}
         else 
             echo "*Build Failed in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}
@@ -145,7 +145,7 @@ autopilot() {
     brinch && rom2=successful
     DATE_END2=$(date +"%s")
     DIFF2=$(($DATE_END2 - $DATE_START2))
-        if [[ $rom2 = successful ]]; then
+        if [[ $rom2 = successful && $disnotif = yes ]]; then
             echo "Build Succesful in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
         else
             echo "*Build Failed in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
@@ -157,7 +157,7 @@ autopilot() {
     brinch && rom3=successful
     DATE_END3=$(date +"%s")
     DIFF3=$(($DATE_END3 - $DATE_START3))
-        if [[ $rom3 = successful ]]; then
+        if [[ $rom3 = successful && $disnotif = yes ]]; then
             echo "*Build Succesful in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}
         else
             echo "*Build Failed in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}
