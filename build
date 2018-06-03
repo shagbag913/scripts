@@ -86,12 +86,12 @@ sync() {
 clean() {
     echo -e ""
     echo -e "${RED}Makin Clobber.${RESTORE}"
-#    cd $romdir1
-#    make clobber
-#    cd $romdir2
-#    make clobber
-#    cd $romdir3
-#    make clobber
+    cd $romdir1
+    make clobber
+    cd $romdir2
+    make clobber
+    cd $romdir3
+    make clobber
     if [[ $disnotif = yes ]]; then echo "Outputs Cleaned" | ${discmd}; fi
 }
 brinch() {
