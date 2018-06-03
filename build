@@ -163,4 +163,3 @@ shift
 done
 
 # TODO: Clean up dot theme patch, add better support for lunch.
-echo `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
