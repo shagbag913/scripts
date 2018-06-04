@@ -1,5 +1,11 @@
 #!/bin/bash
+# Upload to gdrive? Leave blank If you don't want to.
+gdrivetop=/media/shagbag913/Roms/gdrive
+gdrivesavedir=/media/shagbag913/Roms/gdrive/Roms/Images
+gdrivelink=https://rebrand.ly/shagbag913
 
+# Notify discord? Leave blank if no.
+disscript=~/localscripts/dis.py
 set -e
 # dir is where you want the factory image to be downloaded too.
 dir=/media/shagbag913/Roms/factimages
@@ -25,4 +31,19 @@ unzip $image
 cp vendor.img $savedir/${device}-vendor-$(date +%b-%Y).img
 cp radio-${device}*.img $savedir/${device}-radio-$(date +%b-%Y).img
 cp bootloader-${device}*.img $savedir/${device}-bootloader-$(date +%b-%Y).img
+cp boot.img $savedir/${device}-boot-$(date +%b-%Y).img
 rm -rf $dir/$ZIP
+
+# Upload to gdrive
+if [[ $gdrivetop != "" ]]; then
+    rm -rf ${gdrivesavedir}/*
+    cp vendor.img $gdrivesavedir/${device}-vendor-$(date +%b-%Y).img
+    cp radio-${device}*.img $gdrivesavedir/${device}-radio-$(date +%b-%Y).img
+    cp bootloader-${device}*.img $gdrivesavedir/${device}-bootloader-$(date +%b-%Y).img
+    cp boot.img $gdrivesavedir/${device}-boot-$(date +%b-%Y).img
+    cd $gdrivetop
+    grive
+    if [[ $disscript != "" ]]; then
+        echo "**$(date +%B)'s vendor, radio, bootloader, and boot images have been auto-uploaded to Google Drive!**" ${gdrivelink} | python3 $disscript
+    fi
+fi

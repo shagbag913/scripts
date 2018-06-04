@@ -18,6 +18,7 @@ device1=sailfish
 # Google Drive support. This uses a tool called 'grive'. This must be installed on your PC. Check this page out for more info: 
 # https://www.fossmint.com/grive2-google-drive-client-for-linux/
 usegdrive=yes
+gdrivelink=https://rebrand.ly/shagbag913
 
 # Gdrive Directories
 gdrivetop=/media/shagbag913/Roms/gdrive
@@ -25,9 +26,11 @@ gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
 gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
 gdir3=/media/shagbag913/Roms/gdrive/Roms/dotOS
 
-# Discord notifications
+## Discord notifications
 disnotif=yes
- 
+# If your using discord notifications, you need to specify where your discord script is.
+disscript=~/localscripts/dis.py
+
 # wether or not autopilot builds are clean or not, default is no.
 autopilot=
 
@@ -52,9 +55,6 @@ romzip3=dotOS-O-v
 # Number of threads to use
 j=$(($(nproc --all) * 2 - 2))
 
-# If your using discord notifications, you need to specify where your discord script is.
-disscript=~/localscripts/dis.py
-
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -65,7 +65,6 @@ out="out/target/product/${device1}"
 
 # Discord Command
 discmd="python3 ${disscript}"
-
 # Functions
 splash() {
 echo ""
@@ -82,6 +81,7 @@ sync() {
             echo -e "${GREEN}Sync ${RED}Failed!${RESTORE}"
         fi
 }
+splash
 clean() {
     echo -e ""
     echo -e "${RED}Makin Clobber.${RESTORE}"
@@ -91,7 +91,7 @@ clean() {
     make clobber
     cd $romdir3
     make clobber
-    if [[ $disnotif = yes ]]; then echo "Outputs Cleaned" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "Outputs Cleaned. These builds will take a while :)" | ${discmd}; fi
 }
 brinch() {
     echo -e ""
@@ -110,6 +110,7 @@ gdrive() {
         cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
         cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
 	cd ${gdrivetop} && grive
+        echo "**Builds have been uploaded. ${gdrivelink}**" | ${discmd}
     fi
 }
 gdrivepurge() {
@@ -149,7 +150,7 @@ autopilot() {
     DIFF2=$(($DATE_END2 - $DATE_START2))
         if [[ $disnotif = yes ]]; then
             if [[ $rom2 = successful ]]; then
-                echo "Build Succesful in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
+                echo "*Build Succesful in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
             else
                 echo "*Build Failed in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
             fi
@@ -176,7 +177,8 @@ while [ "$1" != "" ]; do
       -c | --clean ) clean;;
       -a | --autopilot ) autopilot;;
       -p | --gdrivepurge ) gdrivepurge;;
+      * ) splash; echo -e "${GREEN} What are you doing!?${RESTORE}"; echo -e " ${RED}build $1${RESTORE} is not a supported command :/";;
+      g ) echo hi
    esac
 shift
 done
-
