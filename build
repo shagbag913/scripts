@@ -177,8 +177,8 @@ while [ "$1" != "" ]; do
       -c | --clean ) clean;;
       -a | --autopilot ) autopilot;;
       -p | --gdrivepurge ) gdrivepurge;;
+      -t | --test ) if [[ $disnotif = yes ]]; then echo "Building _**test**_ builds." | ${discmd}; fi;;
       * ) splash; echo -e "${GREEN} What are you doing!?${RESTORE}"; echo -e " ${RED}build $1${RESTORE} is not a supported command :/";;
-      g ) echo hi
    esac
 shift
 done
