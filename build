@@ -91,7 +91,7 @@ clean() {
     make clobber
     cd $romdir3
     make clobber
-    if [[ $disnotif = yes ]]; then echo "Outputs Cleaned. These builds will take a while :)" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "Outputs Cleaned. These builds will take a while :grin:" | ${discmd}; fi
 }
 brinch() {
     echo -e ""
