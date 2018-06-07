@@ -34,5 +34,8 @@ saved to.
 After everything is configured, Here is how you use it. The syntax of the command is `./getimages <url-of-factory-image>` To get the factory image url, just goto 
 googles factory image page and copy the download link by right clicking `link` on the factory image you want to download.
 
-example:
-![Imgur](https://i.imgur.com/4XbQRpw.png)
+## **getblobs**
+This script is a modified version of Myself5's getblobs script. It is a script used to grab to grab a factory image and extract it, that way it is ready to extract the vendor blobs 
+from it.
+usage: `./getblobs <url-of-factory-image>`. You can also use `./getblobs <url-of-factory-image> -r` for ROM's that do not support setting the correct platform signature on vendor 
+packages. Adding `-r` will just copy the contents of **vendor** to **system/priv-app**.
