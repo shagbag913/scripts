@@ -1,4 +1,0 @@
-#!/bin/bash
-t1="Building Hi."
-if [[ $1 = true ]]; then t1+=Test; fi
-echo $t1
