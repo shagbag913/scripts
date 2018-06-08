@@ -183,7 +183,7 @@ autopilot() {
     gdrive
 }
 while [ "$1" != "" ]; do
-     case $1 in
+    case $1 in
         -s | --sync ) sync;;
         -c | --clean ) clean;;
         -a | --autopilot ) autopilot;;
@@ -191,6 +191,6 @@ while [ "$1" != "" ]; do
         -tp | --gdrivetestpurge ) gdrivepurgetest;;
         -t | --test ) test=true;;
         * ) echo -e "${GREEN} What are you doing!?${RESTORE}"; echo -e " ${RED}build $1${RESTORE} is not a supported command :/";;
-     esac
+    esac
 shift
 done
