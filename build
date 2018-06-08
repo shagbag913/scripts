@@ -65,6 +65,7 @@ out="out/target/product/${device1}"
 
 # Discord Command
 discmd="python3 ${disscript}"
+
 # Functions
 splash() {
 echo ""
@@ -110,7 +111,7 @@ gdrive() {
         cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
         cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
 	cd ${gdrivetop} && grive
-        echo "**Builds have been uploaded. ${gdrivelink}**" | ${discmd}
+        echo "**Builds uploaded. ${gdrivelink}**" | ${discmd}
     fi
 }
 gdrivepurge() {
@@ -121,13 +122,13 @@ gdrivepurge() {
     cd ${gdrivetop} 
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
-    if [[ $disnotif = yes ]]; then echo "**Google Drive has been purged.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "**Google Drive purged.**" | ${discmd}; fi
 }
 autopilot() {
     if [[ $autopilotclean = yes ]]; then clean; fi
     cd $romdir1
     sync
-    if [[ $disnotif = yes ]]; then echo "**${name1} Build Started.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "**Building ${name1}.**" | ${discmd}; fi
     DATE_START1=$(date +"%s")
     . build/envsetup.sh
     lunch aosp_sailfish-userdebug
@@ -136,37 +137,37 @@ autopilot() {
     DIFF1=$(($DATE_END1 - $DATE_START1))
         if [[ $disnotif = yes ]]; then
             if [[ $rom1 = successful ]]; then
-                echo "*Build Successful in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}
+                echo "*Build Successful in $(($DIFF1 / 60)) minute(s).*" | ${discmd}
             else 
-                echo "*Build Failed in $(($DIFF1 / 60)) minute(s) and $(($DIFF1 % 60)) seconds.*" | ${discmd}
+                echo "*Build Failed in $(($DIFF1 / 60)) minute(s).*" | ${discmd}
             fi
         fi
     cd $romdir2
     sync
-    if [[ $disnotif = yes ]]; then echo "**${name2} Build Started.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "**Building ${name2}.**" | ${discmd}; fi
     DATE_START2=$(date +"%s")
     brinch && rom2=successful
     DATE_END2=$(date +"%s")
     DIFF2=$(($DATE_END2 - $DATE_START2))
         if [[ $disnotif = yes ]]; then
             if [[ $rom2 = successful ]]; then
-                echo "*Build Succesful in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
+                echo "*Build Succesful in $(($DIFF2 / 60)) minute(s).*" | ${discmd}
             else
-                echo "*Build Failed in $(($DIFF2 / 60)) minute(s) and $(($DIFF2 % 60)) seconds.*" | ${discmd}
+                echo "*Build Failed in $(($DIFF2 / 60)) minute(s).*" | ${discmd}
             fi
         fi
     cd $romdir3
     sync
-    if [[ $disnotif = yes ]]; then echo "**${name3} Build Started.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "**Building ${name3}.**" | ${discmd}; fi
     DATE_START3=$(date +"%s")
     brinch && rom3=successful
     DATE_END3=$(date +"%s")
     DIFF3=$(($DATE_END3 - $DATE_START3))
         if [[ $disnotif = yes ]]; then
             if [[ $rom3 = successful ]]; then    
-                echo "*Build Succesful in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}
+                echo "*Build Succesful in $(($DIFF3 / 60)) minute(s).*" | ${discmd}
             else
-                echo "*Build Failed in $(($DIFF3 / 60)) minute(s) and $(($DIFF3 % 60)) seconds.*" | ${discmd}
+                echo "*Build Failed in $(($DIFF3 / 60)) minute(s).*" | ${discmd}
             fi
         fi
     gdrive
