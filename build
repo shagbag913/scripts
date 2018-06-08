@@ -18,13 +18,15 @@ device1=sailfish
 # Google Drive support. This uses a tool called 'grive'. This must be installed on your PC. Check this page out for more info: 
 # https://www.fossmint.com/grive2-google-drive-client-for-linux/
 usegdrive=yes
-gdrivelink=https://rebrand.ly/shagbag913
+gdrivelink=http://gg.gg/shagbag913_roms
+gdrivetestlink=http://gg.gg/shagbag913_testbuilds
 
 # Gdrive Directories
 gdrivetop=/media/shagbag913/Roms/gdrive
 gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
 gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
 gdir3=/media/shagbag913/Roms/gdrive/Roms/dotOS
+gdirtest=/media/shagbag913/Roms/gdrive/TestBuilds
 
 ## Discord notifications
 disnotif=yes
@@ -82,7 +84,6 @@ sync() {
             echo -e "${GREEN}Sync ${RED}Failed!${RESTORE}"
         fi
 }
-splash
 clean() {
     echo -e ""
     echo -e "${RED}Makin Clobber.${RESTORE}"
@@ -107,11 +108,19 @@ linch() {
 }
 gdrive() {
     if [[ $usegdrive = yes ]]; then
-        cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
-        cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
-        cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
-	cd ${gdrivetop} && grive
-        echo "**Builds uploaded. ${gdrivelink}**" | ${discmd}
+        if [[ $test != true ]]; then
+            cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
+            cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
+            cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
+	    cd ${gdrivetop} && grive
+            echo "**Google Drive: Builds uploaded. ${gdrivelink}**" | ${discmd}
+        else
+            cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdirtest}
+            cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdirtest}
+            cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdirtest}
+            cd ${gdrivetop} && grive
+            echo "**Google Drive: Test builds uploaded.** *Flash these at your own risk!* ${gdrivetestlink}" | ${discmd}
+        fi
     fi
 }
 gdrivepurge() {
@@ -122,7 +131,13 @@ gdrivepurge() {
     cd ${gdrivetop} 
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
-    if [[ $disnotif = yes ]]; then echo "**Google Drive purged.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "**Google Drive: ROM's purged.**" | ${discmd}; fi
+}
+gdrivepurgetest() {
+    echo -e "${RED} Cleaning GDrive Directories."
+    rm -rf ${gdirtest}/*
+    echo -e "${GREEN}GDrive folders purged.${RESTORE}"
+    if [[ $disnotif = yes ]]; then echo "**Google Drive: test builds purged.**" | ${discmd}; fi
 }
 autopilot() {
     if [[ $autopilotclean = yes ]]; then clean; fi
@@ -178,8 +193,8 @@ while [ "$1" != "" ]; do
       -c | --clean ) clean;;
       -a | --autopilot ) autopilot;;
       -p | --gdrivepurge ) gdrivepurge;;
-      -t | --test ) if [[ $disnotif = yes ]]; then echo "Building _**test**_ builds." | ${discmd}; fi;;
-      * ) splash; echo -e "${GREEN} What are you doing!?${RESTORE}"; echo -e " ${RED}build $1${RESTORE} is not a supported command :/";;
+      -t | --test ) test=true;;
+      * ) echo -e "${GREEN} What are you doing!?${RESTORE}"; echo -e " ${RED}build $1${RESTORE} is not a supported command :/";;
    esac
 shift
 done
