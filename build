@@ -69,11 +69,6 @@ out="out/target/product/${device1}"
 discmd="python3 ${disscript}"
 
 # Functions
-splash() {
-echo ""
-echo -e " You are using ${RED}ShagBag913s${RESTORE} bash script."
-echo ""
-}
 sync() {
     echo -e ""
     echo -e "${RED}Syncing Up.${RESTORE}"
@@ -188,13 +183,14 @@ autopilot() {
     gdrive
 }
 while [ "$1" != "" ]; do
-   case $1 in
-      -s | --sync ) sync;;
-      -c | --clean ) clean;;
-      -a | --autopilot ) autopilot;;
-      -p | --gdrivepurge ) gdrivepurge;;
-      -t | --test ) test=true;;
-      * ) echo -e "${GREEN} What are you doing!?${RESTORE}"; echo -e " ${RED}build $1${RESTORE} is not a supported command :/";;
-   esac
+     case $1 in
+        -s | --sync ) sync;;
+        -c | --clean ) clean;;
+        -a | --autopilot ) autopilot;;
+        -p | --gdrivepurge ) gdrivepurge;;
+        -tp | --gdrivetestpurge ) gdrivepurgetest;;
+        -t | --test ) test=true;;
+        * ) echo -e "${GREEN} What are you doing!?${RESTORE}"; echo -e " ${RED}build $1${RESTORE} is not a supported command :/";;
+     esac
 shift
 done
