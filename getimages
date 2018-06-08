@@ -1,8 +1,8 @@
 #!/bin/bash
 # Upload to gdrive? Leave blank If you don't want to.
 gdrivetop=/media/shagbag913/Roms/gdrive
-gdrivesavedir=/media/shagbag913/Roms/gdrive/Roms/Images
-gdrivelink=https://rebrand.ly/shagbag913_images
+gdrivesavedir=/media/shagbag913/Roms/gdrive/Images
+gdrivelink=http://gg.gg/shagbag913_images
 
 # Notify discord? Leave blank if no.
 disscript=~/localscripts/dis.py
@@ -44,6 +44,6 @@ if [[ $gdrivetop != "" ]]; then
     cd $gdrivetop
     grive
     if [[ $disscript != "" ]]; then
-        echo "**$(date +%B)'s vendor, radio, bootloader, and boot images have been uploaded to Google Drive!**" ${gdrivelink} | python3 $disscript
+        echo "**Google Drive: $(date +%B)'s vendor, radio, bootloader, and boot images have been uploaded!**" ${gdrivelink} | python3 $disscript
     fi
 fi
