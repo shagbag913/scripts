@@ -138,7 +138,7 @@ autopilot() {
     if [[ $autopilotclean = yes ]]; then clean; fi
     cd $romdir1
     sync
-    if [[ $disnotif = yes ]]; then echo "**Building ${name1}.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "Building ${name1}" | ${discmd}; fi
     DATE_START1=$(date +"%s")
     . build/envsetup.sh
     lunch aosp_sailfish-userdebug
@@ -154,7 +154,7 @@ autopilot() {
         fi
     cd $romdir2
     sync
-    if [[ $disnotif = yes ]]; then echo "**Building ${name2}.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "Building ${name2}" | ${discmd}; fi
     DATE_START2=$(date +"%s")
     brinch && rom2=successful
     DATE_END2=$(date +"%s")
@@ -168,7 +168,7 @@ autopilot() {
         fi
     cd $romdir3
     sync
-    if [[ $disnotif = yes ]]; then echo "**Building ${name3}.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then echo "Building ${name3}" | ${discmd}; fi
     DATE_START3=$(date +"%s")
     brinch && rom3=successful
     DATE_END3=$(date +"%s")
