@@ -1,12 +1,13 @@
 #!/bin/bash
+set -e
 # Upload to gdrive? Leave blank If you don't want to.
-gdrivetop=/media/shagbag913/Roms/gdrive
-gdrivesavedir=/media/shagbag913/Roms/gdrive/Images
-gdrivelink=http://gg.gg/shagbag913_images
+#gdrivetop=/media/shagbag913/Roms/gdrive
+#gdrivesavedir=/media/shagbag913/Roms/gdrive/Images
+#gdrivelink=http://gg.gg/shagbag913_images
 
 # Notify discord? Leave blank if no.
-disscript=~/localscripts/dis.py
-set -e
+#disscript=~/localscripts/dis.py
+
 # dir is where you want the factory image to be downloaded too.
 dir=/media/shagbag913/Roms/factimages
 

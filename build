@@ -1,27 +1,14 @@
-#    _____ __ __   ____   ____  ____    ____   ____  _____     ____   __ __  ____  _      ___         _____   __  ____   ____  ____  ______  
-#   / ___/|  |  | /    | /    ||    \  /    | /    |/ ___/    |    \ |  |  ||    || |    |   \       / ___/  /  ]|    \ |    ||    \|      | 
-#  (   \_ |  |  ||  o  ||   __||  o  )|  o  ||   __(   \_     |  o  )|  |  | |  | | |    |    \     (   \_  /  / |  D  ) |  | |  o  )      | 
-#   \__  ||  _  ||     ||  |  ||     ||     ||  |  |\__  |    |     ||  |  | |  | | |___ |  D  |     \__  |/  /  |    /  |  | |   _/|_|  |_|
-#   /  \ ||  |  ||  _  ||  |_ ||  O  ||  _  ||  |_ |/  \ |    |  O  ||  :  | |  | |     ||     |     /  \ /   \_ |    \  |  | |  |    |  |  
-#   \    ||  |  ||  |  ||     ||     ||  |  ||     |\    |    |     ||     | |  | |     ||     |     \    \     ||  .  \ |  | |  |    |  |  
-#    \___||__|__||__|__||___,_||_____||__|__||___,_| \___|    |_____| \__,_||____||_____||_____|      \___|\____||__|\_||____||__|    |__|  
-#                                                                                                                                           
-#   This is just a script I use to my build my stuff. I made it so it is easy to modify and add your own ROM's. 
-#
-
 #!/bin/bash
 
 ### CONFIGURATION ###
 # Device codename
 device1=sailfish
 
-# Google Drive support. This uses a tool called 'grive'. This must be installed on your PC. Check this page out for more info: 
-# https://www.fossmint.com/grive2-google-drive-client-for-linux/
+### GDRIVE CONFIG ###
 usegdrive=yes
 gdrivelink=http://gg.gg/shagbag913_roms
 gdrivetestlink=http://gg.gg/shagbag913_testbuilds
-
-# Gdrive Directories
+## Directories
 gdrivetop=/media/shagbag913/Roms/gdrive
 gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
 gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
@@ -30,8 +17,8 @@ gdirtest=/media/shagbag913/Roms/gdrive/TestBuilds
 
 ## Discord notifications
 disnotif=yes
-# If your using discord notifications, you need to specify where your discord script is.
 disscript=~/localscripts/dis.py
+discmd="python3 ${disscript}"
 
 # wether or not autopilot builds are clean or not, default is no.
 autopilot=
@@ -42,7 +29,7 @@ autopilot=
 # Rom #1 Directory AND name of rom.
 romdir1=/media/shagbag913/Roms/roms/aex
 name1="Aosp Extended"
-romzip1="AospExtended-v5.5-sailfish"
+romzip1="AospExtended-v5.6-sailfish"
 
 # Rom #2 Directory AND name of rom.
 romdir2=/media/shagbag913/Roms/roms/du
@@ -64,9 +51,6 @@ BLUE='\033[0;34m'
 RESTORE='\e[0m'
 
 out="out/target/product/${device1}"
-
-# Discord Command
-discmd="python3 ${disscript}"
 
 # Functions
 sync() {
@@ -132,6 +116,8 @@ gdrivepurgetest() {
     echo -e "${RED} Cleaning GDrive Directories."
     rm -rf ${gdirtest}/*
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
+    cd ${gdrivetop}
+    grive
     if [[ $disnotif = yes ]]; then echo "**Google Drive: test builds purged.**" | ${discmd}; fi
 }
 autopilot() {
