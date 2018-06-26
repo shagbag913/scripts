@@ -115,9 +115,9 @@ gdrivepurge() {
 gdrivepurgetest() {
     echo -e "${RED} Cleaning GDrive Directories."
     rm -rf ${gdirtest}/*
-    echo -e "${GREEN}GDrive folders purged.${RESTORE}"
     cd ${gdrivetop}
     grive
+    echo -e "${GREEN}GDrive folders purged.${RESTORE}"
     if [[ $disnotif = yes ]]; then echo "**Google Drive: test builds purged.**" | ${discmd}; fi
 }
 autopilot() {

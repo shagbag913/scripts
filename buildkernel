@@ -1,0 +1,10 @@
+#!/bin/bash
+
+### Kernel Build Script 
+
+#  Kernel architecture
+arch="arm64";
+subarch="arm64";
+#  Toolchain Location && Toolchain Prefix
+toolchain.dir="/media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/";
+toolchain.prefix="aarch64-linux-gnu"
