@@ -29,4 +29,31 @@ umount vendor_work;
 chown -R ${USER} ${FOLDER_BLOBS}'
 rm -f ${ZIP}
 rm -rf ${FOLDER}
-if [[ $2 = -r ]]; then cp -r ${FOLDER_BLOBS}/vendor/app/* ${FOLDER_BLOBS}/system/priv-app/; fi
+cd ${DIR}
+if [[ $2 = -r ]]; then 
+    dev=${PWD}/device-proprietary-files.txt
+    cp -r ${FOLDER_BLOBS}/vendor/app/* ${FOLDER_BLOBS}/system/priv-app/
+    if ! grep -Fxq "# Vendor APKs" device-proprietary-files.txt; then
+        echo "" >> ${dev}
+        echo "# Vendor APKs" >> ${dev}
+        echo "-priv-app/atfwd/atfwd.apk" >> ${dev}
+        echo "-priv-app/colorservice/colorservice.apk" >> ${dev}
+        echo "-priv-app/datastatusnotification/datastatusnotification.apk" >> ${dev}
+        echo "-priv-app/embms/embms.apk" >> ${dev}
+        echo "priv-app/embms/oem/config_params.xml" >> ${dev}
+        echo "priv-app/embms/oem/provisioning_params.xml" >> ${dev}
+        echo "priv-app/embms/oem/verizon_config_params.txt" >> ${dev}
+        echo "-priv-app/fastdormancy/fastdormancy.apk" >> ${dev}
+        echo "-priv-app/ims/ims.apk" >> ${dev}
+        echo "-priv-app/imssettings/imssettings.apk" >> ${dev}
+        echo "-priv-app/QAS_DVC_MSP/QAS_DVC_MSP.apk" >> ${dev}
+        echo "-priv-app/QtiTelephonyService/QtiTelephonyService.apk" >> ${dev}
+        echo "-priv-app/radioconfig/radioconfig.apk" >> ${dev}
+        echo "-priv-app/RCSBootstraputil/RCSBootstraputil.apk" >> ${dev}
+        echo "-priv-app/SecureExtAuthService/SecureExtAuthService.apk" >> ${dev}
+        echo "-priv-app/shutdownlistener/shutdownlistener.apk" >> ${dev}
+        echo "priv-app/SSRestartDetector/SSRestartDetector.apk" >> ${dev}
+        echo "-priv-app/TimeService/TimeService.apk" >> ${dev}
+        echo "-priv-app/vzw_msdc_api/vzw_msdc_api.apk" >> ${dev}
+    fi
+fi
