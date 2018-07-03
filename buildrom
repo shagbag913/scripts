@@ -12,7 +12,6 @@ gdrivetestlink=http://gg.gg/shagbag913_testbuilds
 gdrivetop=/media/shagbag913/Roms/gdrive
 gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
 gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
-gdir3=/media/shagbag913/Roms/gdrive/Roms/dotOS
 gdirtest=/media/shagbag913/Roms/gdrive/TestBuilds
 
 ## Discord notifications
@@ -35,11 +34,6 @@ romzip1="AospExtended-v5.6-sailfish"
 romdir2=/media/shagbag913/Roms/roms/du
 name2="Dirty Unicorns"
 romzip2=du_sailfish-v12
-
-# Rom #3 Directory AND name of rom.
-romdir3=/media/shagbag913/Roms/roms/dot
-name3=dotOS
-romzip3=dotOS-O-v
 
 # Number of threads to use
 j=$(($(nproc --all) * 2 - 2))
@@ -150,20 +144,6 @@ autopilot() {
                 echo "*Build Succesful in $(($DIFF2 / 60)) minute(s).*" | ${discmd}
             else
                 echo "*Build Failed in $(($DIFF2 / 60)) minute(s).*" | ${discmd}
-            fi
-        fi
-    cd $romdir3
-    sync
-    if [[ $disnotif = yes ]]; then echo "**Building ${name3}.**" | ${discmd}; fi
-    DATE_START3=$(date +"%s")
-    brinch && rom3=successful
-    DATE_END3=$(date +"%s")
-    DIFF3=$(($DATE_END3 - $DATE_START3))
-        if [[ $disnotif = yes ]]; then
-            if [[ $rom3 = successful ]]; then    
-                echo "*Build Succesful in $(($DIFF3 / 60)) minute(s).*" | ${discmd}
-            else
-                echo "*Build Failed in $(($DIFF3 / 60)) minute(s).*" | ${discmd}
             fi
         fi
     gdrive
