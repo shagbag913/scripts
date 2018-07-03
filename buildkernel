@@ -1,10 +1,16 @@
 #!/bin/bash
 
-### Kernel Build Script 
-
-#  Kernel architecture
-arch="arm64";
-subarch="arm64";
-#  Toolchain Location && Toolchain Prefix
-toolchain.dir="/media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/";
-toolchain.prefix="aarch64-linux-gnu"
+### Really ugly Kernel Build Script 
+make mrproper
+make clean
+make shag_defconfig
+make -j$(nproc --all) && success=yes
+if [[ ${success} = yes ]]; then
+    cd /media/shagbag913/Roms/kernel/ak2
+    rm -rf Image.lz4-dtb
+    cp /media/shagbag913/Roms/kernel/shagkernel/arch/arm64/boot/Image.lz4-dtb .
+    ./zip.sh
+    cp ShagKernel*.zip /media/shagbag913/Roms/gdrive/Kernel
+    cd /media/shagbag913/Roms/gdrive
+    grive
+fi
