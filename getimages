@@ -38,6 +38,7 @@ rm -rf $dir/$ZIP
 # Upload to gdrive
 if [[ $gdrivetop != "" ]]; then
     rm -rf ${gdrivesavedir}/*
+    mkdir -p ${gdrivesavedir}
     cp vendor.img $gdrivesavedir/${device}-vendor-$(date +%b-%Y).img
     cp radio-${device}*.img $gdrivesavedir/${device}-radio-$(date +%b-%Y).img
     cp bootloader-${device}*.img $gdrivesavedir/${device}-bootloader-$(date +%b-%Y).img
