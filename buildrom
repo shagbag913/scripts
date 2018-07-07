@@ -1,15 +1,17 @@
 #!/bin/bash
 
+# Source common stuff
+source common
+
 ### CONFIGURATION ###
 # Device codename
 device1=sailfish
 
 ### GDRIVE CONFIG ###
 usegdrive=yes
-gdrivelink=http://gg.gg/shagbag913_roms
-gdrivetestlink=http://gg.gg/shagbag913_testbuilds
+GD_URL=http://gg.gg/shagbag913_roms
+GD_TESTURL=http://gg.gg/shagbag913_testbuilds
 ## Directories
-gdrivetop=/media/shagbag913/Roms/gdrive
 gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
 gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
 gdirtest=/media/shagbag913/Roms/gdrive/TestBuilds
@@ -85,14 +87,14 @@ gdrive() {
             cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
             cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
             cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
-	    cd ${gdrivetop} && grive
-            echo "**Google Drive: Builds uploaded. ${gdrivelink}**" | ${discmd}
+	    cd ${GD_FOLDER} && grive
+            echo "**Google Drive: Builds uploaded. ${GD_URL}**" | ${discmd}
         else
             cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdirtest}
             cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdirtest}
             cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdirtest}
-            cd ${gdrivetop} && grive
-            echo "**Google Drive: Test builds uploaded.** *Flash these at your own risk!* ${gdrivetestlink}" | ${discmd}
+            cd ${GD_FOLDER} && grive
+            echo "**Google Drive: Test builds uploaded.** *Flash these at your own risk!* ${GD_TESTURL}" | ${discmd}
         fi
     fi
 }
@@ -101,7 +103,7 @@ gdrivepurge() {
     rm -rf ${gdir1}/*
     rm -rf ${gdir2}/*
     rm -rf ${gdir3}/*
-    cd ${gdrivetop} 
+    cd ${GD_FOLDER} 
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
     if [[ $disnotif = yes ]]; then echo "**Google Drive: ROM's purged.**" | ${discmd}; fi
@@ -109,7 +111,7 @@ gdrivepurge() {
 gdrivepurgetest() {
     echo -e "${RED} Cleaning GDrive Directories."
     rm -rf ${gdirtest}/*
-    cd ${gdrivetop}
+    cd ${GD_FOLDER}
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
     if [[ $disnotif = yes ]]; then echo "**Google Drive: test builds purged.**" | ${discmd}; fi

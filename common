@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# Common variables/functions I use in my other bash scripts
+
+# Number of parallel threads to use when compiling 
+j=-j$(($(nproc --all) * 2 - 2))
+
+###########################
+## Discord configuration ##
+###########################
+
+# Discord script location
+DC_SCRIPT="${HOME}/shagbot/dis.py"
+
+# Discord message
+dc_msg() {
+    echo "$1" | python3 ${DC_SCRIPT}
+}
+
+################################
+## Google Drive configuration ##
+################################
+
+# Check if "grive" is installed
+grive_chk() {
+if [[ ! "pacman -Qs grive" ]]; then
+    echo " grive is not installed! Install and configure grive to have your projects automatically uploaded to Google Drive!"
+fi
+}
+
+# Google Drive folder location
+GD_FOLDER="/media/shagbag913/Roms/gdrive"
