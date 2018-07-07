@@ -18,8 +18,6 @@ gdirtest=/media/shagbag913/Roms/gdrive/TestBuilds
 
 ## Discord notifications
 disnotif=yes
-disscript=~/localscripts/dis.py
-discmd="python3 ${disscript}"
 
 # wether or not autopilot builds are clean or not, default is no.
 autopilot=
@@ -68,7 +66,7 @@ clean() {
     make clobber
     cd $romdir3
     make clobber
-    if [[ $disnotif = yes ]]; then echo "Outputs Cleaned. These builds will take a while :grin:" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then dc_msg "Outputs Cleaned. These builds will take a while :grin:"; fi
 }
 brinch() {
     echo -e ""
@@ -88,13 +86,13 @@ gdrive() {
             cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
             cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
 	    cd ${GD_FOLDER} && grive
-            echo "**Google Drive: Builds uploaded. ${GD_URL}**" | ${discmd}
+            dc_msg "**Google Drive: Builds uploaded. ${GD_URL}**"
         else
             cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdirtest}
             cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdirtest}
             cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdirtest}
             cd ${GD_FOLDER} && grive
-            echo "**Google Drive: Test builds uploaded.** *Flash these at your own risk!* ${GD_TESTURL}" | ${discmd}
+            dc_msg "**Google Drive: Test builds uploaded.** *Flash these at your own risk!* ${GD_TESTURL}"
         fi
     fi
 }
@@ -106,7 +104,7 @@ gdrivepurge() {
     cd ${GD_FOLDER} 
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
-    if [[ $disnotif = yes ]]; then echo "**Google Drive: ROM's purged.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then dc_msg "**Google Drive: ROM's purged.**"; fi
 }
 gdrivepurgetest() {
     echo -e "${RED} Cleaning GDrive Directories."
@@ -114,13 +112,13 @@ gdrivepurgetest() {
     cd ${GD_FOLDER}
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
-    if [[ $disnotif = yes ]]; then echo "**Google Drive: test builds purged.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then dc_msg "**Google Drive: test builds purged.**"; fi
 }
 autopilot() {
     if [[ $autopilotclean = yes ]]; then clean; fi
     cd $romdir1
     sync
-    if [[ $disnotif = yes ]]; then echo "**Building ${name1}.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then dc_msg "**Building ${name1}.**"; fi
     DATE_START1=$(date +"%s")
     . build/envsetup.sh
     lunch aosp_sailfish-userdebug
@@ -129,23 +127,23 @@ autopilot() {
     DIFF1=$(($DATE_END1 - $DATE_START1))
         if [[ $disnotif = yes ]]; then
             if [[ $rom1 = successful ]]; then
-                echo "*Build Successful in $(($DIFF1 / 60)) minute(s).*" | ${discmd}
+                dc_msg "*Build Successful in $(($DIFF1 / 60)) minute(s).*"
             else 
-                echo "*Build Failed in $(($DIFF1 / 60)) minute(s).*" | ${discmd}
+                dc_msg "*Build Failed in $(($DIFF1 / 60)) minute(s).*"
             fi
         fi
     cd $romdir2
     sync
-    if [[ $disnotif = yes ]]; then echo "**Building ${name2}.**" | ${discmd}; fi
+    if [[ $disnotif = yes ]]; then dc_msg "**Building ${name2}.**"; fi
     DATE_START2=$(date +"%s")
     brinch && rom2=successful
     DATE_END2=$(date +"%s")
     DIFF2=$(($DATE_END2 - $DATE_START2))
         if [[ $disnotif = yes ]]; then
             if [[ $rom2 = successful ]]; then
-                echo "*Build Succesful in $(($DIFF2 / 60)) minute(s).*" | ${discmd}
+                dc_msg "*Build Succesful in $(($DIFF2 / 60)) minute(s).*"
             else
-                echo "*Build Failed in $(($DIFF2 / 60)) minute(s).*" | ${discmd}
+                dc_msg "*Build Failed in $(($DIFF2 / 60)) minute(s).*"
             fi
         fi
     gdrive
