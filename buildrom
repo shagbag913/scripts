@@ -4,8 +4,6 @@
 source common
 
 ### CONFIGURATION ###
-# Device codename
-device1=sailfish
 
 ### GDRIVE CONFIG ###
 usegdrive=yes
@@ -41,7 +39,7 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RESTORE='\e[0m'
 
-out="out/target/product/${device1}"
+out="out/target/product/${DEVICE}"
 
 # Functions
 sync() {
@@ -69,7 +67,7 @@ brinch() {
     echo -e ""
     echo -e "${RED}Brunching.${RESTORE}"
     . build/envsetup.sh
-    brunch ${device1}
+    brunch ${DEVICE}
 }
 linch() {
     echo -e ""
