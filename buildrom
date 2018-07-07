@@ -95,7 +95,7 @@ gdrive() {
 }
 gdrivepurge() {
     echo -e "${RED} Cleaning GDrive Directories."
-    for n in ${gdir1} ${gdir2} ${gdir1}; do
+    for n in ${gdir1} ${gdir2}; do
         rm -rf $n/*
     done
     cd ${GD_FOLDER} 
