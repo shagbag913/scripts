@@ -1,51 +1,46 @@
 #!/bin/bash
 set -e
-# Upload to gdrive? Leave blank If you don't want to.
-gdrivetop=/media/shagbag913/Roms/gdrive
-gdrivesavedir=/media/shagbag913/Roms/gdrive/Images
-gdrivelink=http://gg.gg/shagbag913_images
 
-# Notify discord? Leave blank if no.
-disscript=~/localscripts/dis.py
+# Source common stuff
+source common
+
+# Upload to gdrive? Leave blank If you don't want to.
+GD_IMAGES="${GD_FOLDER}/Images"
+GD_IMAGESURL=http://gg.gg/shagbag913_images
 
 # dir is where you want the factory image to be downloaded too.
-dir=/media/shagbag913/Roms/factimages
+DIR=/media/shagbag913/Roms/factimages
 
 # savedir is where you want the vendor, bootloader, and radio images to be saved too.
 # if you name it 'images-${folder}', it will be named 'images-<build-id>'.
-savedir=/media/shagbag913/Roms/factimages/images-$(date +%b-%Y)
+SAVEDIR=${DIR}/images-$(date +%b-%Y)
 
-# Your device codename.
-device=sailfish
-
-url=$1
-ZIP=$(basename ${url})
-folder=$(echo ${ZIP} | awk -F-factory '{print $1}')
-image=image-${folder}.zip
-mkdir -p $savedir
-mkdir -p $dir
-cd $dir
-wget $url
-unzip $ZIP
-cd $folder
-unzip $image
-cp vendor.img $savedir/${device}-vendor-$(date +%b-%Y).img
-cp radio-${device}*.img $savedir/${device}-radio-$(date +%b-%Y).img
-cp bootloader-${device}*.img $savedir/${device}-bootloader-$(date +%b-%Y).img
-cp boot.img $savedir/${device}-boot-$(date +%b-%Y).img
-rm -rf $dir/$ZIP
+URL=$1
+ZIP=$(basename ${URL})
+FOLDER=$(echo ${ZIP} | awk -F-factory '{print $1}')
+IMAGE=image-${FOLDER}.zip
+mkdir -p ${SAVEDIR}
+mkdir -p ${DIR}
+cd ${DIR}
+wget ${URL}
+unzip ${ZIP}
+cd ${FOLDER}
+unzip ${IMAGE}
+cp vendor.img ${SAVEDIR}/${DEVICE}-vendor-$(date +%b-%Y).img
+cp radio-${DEVICE}*.img ${SAVEDIR}/${DEVICE}-radio-$(date +%b-%Y).img
+cp bootloader-${DEVICE}*.img ${SAVEDIR}/${DEVICE}-bootloader-$(date +%b-%Y).img
+cp boot.img ${SAVEDIR}/${DEVICE}-boot-$(date +%b-%Y).img
+rm -rf ${DIR}/${ZIP}
 
 # Upload to gdrive
-if [[ $gdrivetop != "" ]]; then
-    rm -rf ${gdrivesavedir}/*
-    mkdir -p ${gdrivesavedir}
-    cp vendor.img $gdrivesavedir/${device}-vendor-$(date +%b-%Y).img
-    cp radio-${device}*.img $gdrivesavedir/${device}-radio-$(date +%b-%Y).img
-    cp bootloader-${device}*.img $gdrivesavedir/${device}-bootloader-$(date +%b-%Y).img
-    cp boot.img $gdrivesavedir/${device}-boot-$(date +%b-%Y).img
-    cd $gdrivetop
+if [[ ${GD_FOLDER} != "" ]]; then
+    rm -rf ${GD_IMAGES}/*
+    mkdir -p ${GD_IMAGES}
+    cp vendor.img ${GD_IMAGES}/${DEVICE}-vendor-$(date +%b-%Y).img
+    cp radio-${DEVICE}*.img ${GD_IMAGES}/${DEVICE}-radio-$(date +%b-%Y).img
+    cp bootloader-${DEVICE}*.img ${GD_IMAGES}/${DEVICE}-bootloader-$(date +%b-%Y).img
+    cp boot.img ${GD_IMAGES}/${DEVICE}-boot-$(date +%b-%Y).img
+    cd ${GD_FOLDER}
     grive
-    if [[ $disscript != "" ]]; then
-        echo "**Google Drive: $(date +%B)'s vendor, radio, bootloader, and boot images have been uploaded!**" ${gdrivelink} | python3 $disscript
+        dc_msg "**Google Drive: $(date +%B)'s vendor, radio, bootloader, and boot images have been uploaded! ${GD_IMAGESURL}**"
     fi
-fi
