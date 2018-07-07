@@ -35,9 +35,6 @@ romdir2=/media/shagbag913/Roms/roms/du
 name2="Dirty Unicorns"
 romzip2=du_sailfish-v12
 
-# Number of threads to use
-j=$(($(nproc --all) * 2 - 2))
-
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -50,7 +47,7 @@ out="out/target/product/${device1}"
 sync() {
     echo -e ""
     echo -e "${RED}Syncing Up.${RESTORE}"
-    repo sync -j6 --no-tags --no-clone-bundle --force-sync -f -q
+    repo sync ${j} --no-tags --no-clone-bundle --force-sync -f -q
         if [[ $? = 0 ]]; then
             echo -e "${BLUE}Sync Successful!${RESTORE}"
         else
@@ -98,9 +95,9 @@ gdrive() {
 }
 gdrivepurge() {
     echo -e "${RED} Cleaning GDrive Directories."
-    rm -rf ${gdir1}/*
-    rm -rf ${gdir2}/*
-    rm -rf ${gdir3}/*
+    for n in ${gdir1} ${gdir2} ${gdir1}; do
+        rm -rf $n/*
+    done
     cd ${GD_FOLDER} 
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
@@ -122,7 +119,7 @@ autopilot() {
     DATE_START1=$(date +"%s")
     . build/envsetup.sh
     lunch aosp_sailfish-userdebug
-    make aex -j6 && rom1=successful
+    make aex ${j} && rom1=successful
     DATE_END1=$(date +"%s")
     DIFF1=$(($DATE_END1 - $DATE_START1))
         if [[ $disnotif = yes ]]; then
