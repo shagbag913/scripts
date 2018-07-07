@@ -3,14 +3,15 @@
 ### Really ugly Kernel Build Script 
 make mrproper
 make clean
-make shag_defconfig
-make -j$(nproc --all) && success=yes
+make marlin_defconfig
+make -j6 && success=yes
 if [[ ${success} = yes ]]; then
     cd /media/shagbag913/Roms/kernel/ak2
     rm -rf Image.lz4-dtb
     cp /media/shagbag913/Roms/kernel/shagkernel/arch/arm64/boot/Image.lz4-dtb .
     ./zip.sh
-    cp ShagKernel*.zip /media/shagbag913/Roms/gdrive/Kernel
     cd /media/shagbag913/Roms/gdrive
+    rm -rf Kernel/*
+    cp /media/shagbag913/Roms/kernel/ak2/ShagKernel*.zip ./Kernel
     grive
 fi
