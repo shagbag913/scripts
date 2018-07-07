@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Source common stuff
+source common
+
 ### Really ugly Kernel Build Script 
 make mrproper
 make clean
 make marlin_defconfig
-make -j6 && success=yes
+make ${j} && success=yes
 if [[ ${success} = yes ]]; then
     cd /media/shagbag913/Roms/kernel/ak2
     rm -rf Image.lz4-dtb
