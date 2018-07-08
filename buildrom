@@ -26,7 +26,7 @@ autopilot=
 # Rom #1 Directory AND name of rom.
 romdir1=/media/shagbag913/Roms/roms/aex
 name1="Aosp Extended"
-romzip1="AospExtended-v5.6-sailfish"
+romzip1="AospExtended-v5.7-sailfish"
 
 # Rom #2 Directory AND name of rom.
 romdir2=/media/shagbag913/Roms/roms/du
