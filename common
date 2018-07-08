@@ -2,6 +2,9 @@
 #
 # Common variables/functions I use in my other bash scripts
 
+# Disable shellcheck unused variable warning
+# shellcheck disable=SC2034
+
 # Device Codename
 DEVICE="sailfish"
 
@@ -17,7 +20,7 @@ DC_SCRIPT="${HOME}/shagbot/dis.py"
 
 # Discord message
 dc_msg() {
-    echo "$1" | python3 ${DC_SCRIPT}
+    echo "$1" | python3 "${DC_SCRIPT}"
 }
 
 ################################
@@ -27,7 +30,7 @@ dc_msg() {
 # Check if "grive" is installed
 grive_chk() {
 if ! command -v grive > /dev/null; then
-    echo " grive is not installed! Install and configure grive to have your projects automatically uploaded to Google Drive!"
+    echo "${RED}grive is not installed! Install and configure grive to have your projects automatically uploaded to Google Drive!${RESTORE}"
     unset GDRIVE
 else
     GDRIVE=true
