@@ -7,7 +7,7 @@ source common
 make mrproper
 make clean
 make marlin_defconfig
-make ${j} && success=yes
+make ${PAR_THREAD} && success=yes
 if [[ ${success} = yes ]]; then
     cd /media/shagbag913/Roms/kernel/ak2
     rm -rf Image.lz4-dtb

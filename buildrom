@@ -39,7 +39,7 @@ out="out/target/product/${DEVICE}"
 sync() {
     echo -e ""
     echo -e "${RED}Syncing Up.${RESTORE}"
-    repo sync ${j} --no-tags --no-clone-bundle --force-sync -f -q
+    repo sync ${PAR_THREAD} --no-tags --no-clone-bundle --force-sync -f -q
         if [[ $? = 0 ]]; then
             echo -e "${BLUE}Sync Successful!${RESTORE}"
         else
@@ -111,7 +111,7 @@ autopilot() {
     DATE_START1=$(date +"%s")
     . build/envsetup.sh
     lunch aosp_sailfish-userdebug
-    make aex ${j} && rom1=successful
+    make aex ${PAR_THREAD} && rom1=successful
     DATE_END1=$(date +"%s")
     DIFF1=$(($DATE_END1 - $DATE_START1))
         if [[ $disnotif = yes ]]; then

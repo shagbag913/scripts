@@ -7,7 +7,7 @@
 DEVICE="sailfish"
 
 # Number of parallel threads to use when compiling 
-j=-j$(($(nproc --all) * 2 - 2))
+PAR_THREAD=-j$(($(nproc --all) * 2 - 2))
 
 ###########################
 ## Discord configuration ##
