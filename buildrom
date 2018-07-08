@@ -33,12 +33,6 @@ romdir2=/media/shagbag913/Roms/roms/du
 name2="Dirty Unicorns"
 romzip2=du_sailfish-v12
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-RESTORE='\e[0m'
-
 out="out/target/product/${DEVICE}"
 
 # Functions
