@@ -26,7 +26,7 @@ dc_msg() {
 
 # Check if "grive" is installed
 grive_chk() {
-if [[ ! "pacman -Qs grive" ]]; then
+if ! command -v give > /dev/null; then
     echo " grive is not installed! Install and configure grive to have your projects automatically uploaded to Google Drive!"
     GDRIVE=false
 fi
