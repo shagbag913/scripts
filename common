@@ -26,9 +26,11 @@ dc_msg() {
 
 # Check if "grive" is installed
 grive_chk() {
-if ! command -v give > /dev/null; then
+if ! command -v grive > /dev/null; then
     echo " grive is not installed! Install and configure grive to have your projects automatically uploaded to Google Drive!"
-    GDRIVE=false
+    unset GDRIVE
+else
+    GDRIVE=true
 fi
 }
 
