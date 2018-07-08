@@ -1,8 +1,13 @@
 #!/bin/bash
-#
+
+# Disable shellcheck unused variable warning
+# shellcheck disable=SC2034
+# Disable shellcheck warning misspelled variable
+# shellcheck disable=SC2153
+
 # Source common
 source common
-#
+
 ###############
 ## Variables ##
 ###############
@@ -33,33 +38,37 @@ IMAGE_ZIP="image-${FI_FOLDER}.zip"
 ## Download the factory image ##
 ################################
 
-cd ${FI_DOWNLOAD_DIR}
+cd ${FI_DOWNLOAD_DIR} || return
 ## Only download the zip if it doesn't already exist ##
 if [[ ! -e ${FI_ZIP} ]]; then
-    wget ${URL}
+    wget "${URL}"
         if [[ $? -gt 0 ]]; then
             echo -e "${RED}Download failed! Exiting...${RESTORE}" && exit 1
         fi
 fi
-unzip ${FI_ZIP}
-cd ${FI_FOLDER}
-unzip ${IMAGE_ZIP}
+unzip "${FI_ZIP}"
+cd "${FI_FOLDER}" || return
+unzip "${IMAGE_ZIP}"
 ## Create the save directory if it does not exist ##
 [[ ! -e ${FI_SAVE_DIR} ]] && mkdir "${FI_SAVE_DIR}" && echo -e "${BLUE}Created directory ${FI_SAVE_DIR}${RESTORE}"
-cp vendor.img ${FI_SAVE_DIR}/${DEVICE}-vendor-$(date +%b).img
-cp boot.img ${FI_SAVE_DIR}/${DEVICE}-boot-$(date +%b).img
+cp vendor.img "${FI_SAVE_DIR}/${DEVICE}-vendor-$(date +%b).img"
+cp boot.img "${FI_SAVE_DIR}/${DEVICE}-boot-$(date +%b).img"
 
 #####################################
 ## Transfer images to Google Drive ##
 #####################################
 
-GD_IMAGESURL=http://gg.gg/shagbag913_images
-cp -r ${FI_SAVE_DIR} ${GD_FOLDER}/Images
-cd ${GD_FOLDER}
-grive_chk && grive && dc_msg "**Google Drive: $(date +%B)s vendor and boot images uploaded! ${GD_IMAGESURL}**"
+grive_chk
+if [[ ${GDRIVE} = true ]]; then
+    GD_IMAGESURL=http://gg.gg/shagbag913_images
+    cp -r "${FI_SAVE_DIR}" "${GD_FOLDER}"/Images
+    cd "${GD_FOLDER}" || return
+    grive
+    dc_msg "**Google Drive: $(date +%B)s vendor and boot images uploaded! ${GD_IMAGESURL}**"
+fi
 
 ########################
 ## Remove factory ZIP ##
 ########################
 
-rm -rf ${FI_DOWNLOAD_DIR}/${FI_ZIP}
+rm -rf "${FI_DOWNLOAD_DIR:?}/${FI_ZIP}"
