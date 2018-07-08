@@ -20,19 +20,19 @@ URL="$1"
 FI_ZIP="$(basename "${URL}")"
 FI_FOLDER="$(echo "${FI_ZIP}" | awk -F-factory '{print $1}')"
 IMAGE_ZIP="image-${FI_FOLDER}.zip"
-#
+
 ##################
 # Sanity Checks ##
 ##################
-#
+
 [[ -z ${FI_SAVE_DIR} ]] && echo -e "${RED}Save location not set! Exiting...${RESTORE}" && exit 1
 [[ ! -e ${FI_DOWNLOAD_DIR} ]] && echo -e "${RED}Save location ${FI_SAVE_DIR} does not exist! Exiting...${RESTORE}" && exit 1
 [[ -z ${URL} ]] && echo -e "${RED}No URL specified! Exiting...${RESTORE}" && exit 1
-#
+
 ################################
 ## Download the factory image ##
 ################################
-#
+
 cd ${FI_DOWNLOAD_DIR}
 ## Only download the zip if it doesn't already exist ##
 if [[ ! -e ${FI_ZIP} ]]; then
@@ -48,15 +48,18 @@ unzip ${IMAGE_ZIP}
 [[ ! -e ${FI_SAVE_DIR} ]] && mkdir "${FI_SAVE_DIR}" && echo -e "${BLUE}Created directory ${FI_SAVE_DIR}${RESTORE}"
 cp vendor.img ${FI_SAVE_DIR}/${DEVICE}-vendor-$(date +%b).img
 cp boot.img ${FI_SAVE_DIR}/${DEVICE}-boot-$(date +%b).img
-#
+
 #####################################
 ## Transfer images to Google Drive ##
 #####################################
-#
+
 GD_IMAGESURL=http://gg.gg/shagbag913_images
 cp -r ${FI_SAVE_DIR} ${GD_FOLDER}/Images
 cd ${GD_FOLDER}
 grive_chk && grive && dc_msg "**Google Drive: $(date +%B)s vendor and boot images uploaded! ${GD_IMAGESURL}**"
 
+########################
 ## Remove factory ZIP ##
+########################
+
 rm -rf ${FI_DOWNLOAD_DIR}/${FI_ZIP}
