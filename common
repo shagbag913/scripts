@@ -1,6 +1,4 @@
 #!/bin/bash
-#
-# Common variables/functions I use in my other bash scripts
 
 # Disable shellcheck unused variable warning
 # shellcheck disable=SC2034
