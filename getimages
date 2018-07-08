@@ -59,4 +59,4 @@ cd ${GD_FOLDER}
 grive_chk && grive && dc_msg "**Google Drive: $(date +%B)s vendor and boot images uploaded! ${GD_IMAGESURL}**"
 
 ## Remove factory ZIP ##
-rm -rf ${FI_ZIP}
+rm -rf ${FI_DOWNLOAD_DIR}/${FI_ZIP}
