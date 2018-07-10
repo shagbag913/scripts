@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
-
+#
+#################################################
+## Common variables/functions and whatnot that ##
+## are used across all scripts in this repo    ##
+#################################################
+#
 # Disable shellcheck unused variable warning
 # shellcheck disable=SC2034
+#
+############
+## Colors ##
+############
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RESTORE='\e[0m'
 
 # Device Codename
 DEVICE="sailfish"
@@ -16,6 +30,15 @@ PAR_THREAD="-j$(($(nproc --all) * 2 - 2))"
 # Discord script location
 DC_SCRIPT="${HOME}/shagbot/dis.py"
 
+dc_chk() {
+if [[ ! -e ${DC_SCRIPT} ]]; then
+    echo -e "${RED}Discord bot not found! This script supports using echo to pipe text into a discord bot!${RESTORE}"
+    unset DC
+else
+    DC=true
+fi
+}
+
 # Discord message
 dc_msg() {
     echo "$1" | python3 "${DC_SCRIPT}"
@@ -28,7 +51,7 @@ dc_msg() {
 # Check if "grive" is installed
 grive_chk() {
 if ! command -v grive > /dev/null; then
-    echo "${RED}grive is not installed! Install and configure grive to have your projects automatically uploaded to Google Drive!${RESTORE}"
+    echo -e "${RED}grive is not installed! Install and configure grive to have your projects automatically uploaded to Google Drive!${RESTORE}"
     unset GDRIVE
 else
     GDRIVE=true
@@ -37,12 +60,3 @@ fi
 
 # Google Drive folder location
 GD_FOLDER="/media/shagbag913/Roms/gdrive"
-
-############
-## Colors ##
-############
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-RESTORE='\e[0m'
-
