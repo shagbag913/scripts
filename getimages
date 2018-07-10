@@ -2,7 +2,7 @@
 
 # Disable shellcheck unused variable warning
 # shellcheck disable=SC2034
-# Disable shellcheck warning misspelled variable
+# Disable shellcheck misspelled variable warning
 # shellcheck disable=SC2153
 
 # Source common
