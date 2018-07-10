@@ -6,7 +6,7 @@ source common
 ### Really ugly Kernel Build Script 
 make mrproper
 make clean
-make marlin_defconfig
+make shag_defconfig
 make ${PAR_THREAD} && success=yes
 if [[ ${success} = yes ]]; then
     cd /media/shagbag913/Roms/kernel/ak2
