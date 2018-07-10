@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Disable shellcheck unused variable warning
 # shellcheck disable=SC2034
