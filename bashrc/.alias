@@ -1,7 +1,9 @@
-############
-## Alias's##
-############
+#############
+## Alias's ##
+#############
 
+alias l='ls'
+alias sl='ls'
 alias ls='ls --color=auto'
 alias brc='source ~/.bashrc'
 alias grep='grep --color=auto'
