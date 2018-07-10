@@ -1,0 +1,8 @@
+############
+## Alias's##
+############
+
+alias ls='ls --color=auto'
+alias brc='source ~/.bashrc'
+alias grep='grep --color=auto'
+alias roms='cd /media/shagbag913/Roms'

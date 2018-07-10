@@ -1,0 +1,23 @@
+##########################
+## Enviroment variables ##
+##########################
+
+# Python2 symlink && scripts directory
+export PATH="/opt/android-build:/media/shagbag913/Roms/scripts:$PATH"
+
+# Set LANG=C to fix flex errors
+export LANG=C
+
+# Enable the use of ccache
+export USE_CCACHE=1
+export CCACHE_DIR="/media/shagbag913/Roms/.ccache"
+
+# Cross compiler directory
+export CROSS_COMPILE="ccache /media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+
+# Architecture's to use when cross compiling
+export ARCH=arm64
+export SUBARCH=arm64
+
+# Show GCC errors in color
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
