@@ -32,7 +32,7 @@ DC_SCRIPT="${HOME}/shagbot/dis.py"
 
 dc_chk() {
 if [[ ! -e ${DC_SCRIPT} ]]; then
-    echo -e "${RED}Discord bot not found! This script supports using echo to pipe text into a discord bot!${RESTORE}"
+    echo -e "${RED}Discord bot not found! This script supports piping text into a discord bot!${RESTORE}"
     unset DC
 else
     DC=true
