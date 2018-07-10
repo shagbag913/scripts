@@ -64,7 +64,10 @@ if [[ ${GDRIVE} = true ]]; then
     cp -r "${FI_SAVE_DIR}" "${GD_FOLDER}"/Images
     cd "${GD_FOLDER}" || return
     grive
-    dc_msg "**Google Drive: $(date +%B)s vendor and boot images uploaded! ${GD_IMAGESURL}**"
+    dc_chk
+    if [[ ${DC} = true ]]; then
+        dc_msg "**Google Drive: $(date +%B)s vendor and boot images uploaded! ${GD_IMAGESURL}**"
+    fi
 fi
 
 ########################
