@@ -51,8 +51,8 @@ cd "${FI_FOLDER}" || return
 unzip "${IMAGE_ZIP}"
 ## Create the save directory if it does not exist ##
 [[ ! -e ${FI_SAVE_DIR} ]] && mkdir "${FI_SAVE_DIR}" && echo -e "${BLUE}Created directory ${FI_SAVE_DIR}${RESTORE}"
-cp vendor.img "${FI_SAVE_DIR}/${DEVICE}-vendor-$(date +%b).img"
-cp boot.img "${FI_SAVE_DIR}/${DEVICE}-boot-$(date +%b).img"
+cp vendor.img "${FI_SAVE_DIR}/"
+cp boot.img "${FI_SAVE_DIR}/"
 
 #####################################
 ## Transfer images to Google Drive ##
