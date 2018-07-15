@@ -20,11 +20,11 @@ source common
 # IMAGE_ZIP: The zip containing all of the image files
 #
 FI_DOWNLOAD_DIR="/media/shagbag913/Roms/factimages"
-FI_SAVE_DIR="${FI_DOWNLOAD_DIR}/$(date +%b)-images"
 URL="$1"
 FI_ZIP="$(basename "${URL}")"
 FI_FOLDER="$(echo "${FI_ZIP}" | awk -F-factory '{print $1}')"
 IMAGE_ZIP="image-${FI_FOLDER}.zip"
+FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"$(echo ${FI_ZIP} | sed -n 's/-factory.*//; s/.*sailfish-//p')"
 
 ##################
 # Sanity Checks ##
