@@ -40,8 +40,12 @@ IMAGE_ZIP="image-${FI_FOLDER}.zip"
 
 cd ${FI_DOWNLOAD_DIR} || return
 ## Only download the zip if it doesn't already exist ##
-[[ ! -e ${FI_ZIP} ]] && wget "${URL}" || \
-    echo -e "${RED}Download failed! exiting...${RESTORE}" && exit 1
+if [[ ! -e ${FI_ZIP} ]]; then
+    wget "${URL}"
+        if [[ $? -gt 0 ]]; then
+            echo -e "${RED}Download failed! Exiting...${RESTORE}" && exit 1
+        fi
+fi
 unzip "${FI_ZIP}"
 cd "${FI_FOLDER}" || return
 unzip "${IMAGE_ZIP}"
