@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# Disable shellcheck unused variable warning
-# shellcheck disable=SC2034
-# Disable shellcheck misspelled variable warning
-# shellcheck disable=SC2153
-
 # Source common
 source common
 
