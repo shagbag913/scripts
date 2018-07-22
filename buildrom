@@ -11,9 +11,6 @@ gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
 gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
 gdirtest=/media/shagbag913/Roms/gdrive/TestBuilds
 
-## Discord notifications
-disnotif=yes
-
 # wether or not autopilot builds are clean or not, default is no.
 autopilot=
 
@@ -31,6 +28,8 @@ name2="Dirty Unicorns"
 romzip2=du_sailfish-v12
 
 out="out/target/product/${DEVICE}"
+
+dc_chk
 
 # Functions
 sync() {
@@ -52,7 +51,7 @@ clean() {
     make clobber
     cd $romdir3
     make clobber
-    if [[ $disnotif = yes ]]; then dc_msg "Outputs Cleaned. These builds will take a while :grin:"; fi
+    if [[ ${DC} = true ]]; then dc_msg "Outputs Cleaned. These builds will take a while :grin:"; fi
 }
 brinch() {
     echo -e ""
@@ -91,7 +90,7 @@ gdrivepurge() {
     cd ${GD_FOLDER} 
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
-    if [[ $disnotif = yes ]]; then dc_msg "**Google Drive: ROM's purged.**"; fi
+    if [[ ${DC} = true ]]; then dc_msg "**Google Drive: ROM's purged.**"; fi
 }
 gdrivepurgetest() {
     echo -e "${RED} Cleaning GDrive Directories."
@@ -99,20 +98,20 @@ gdrivepurgetest() {
     cd ${GD_FOLDER}
     grive
     echo -e "${GREEN}GDrive folders purged.${RESTORE}"
-    if [[ $disnotif = yes ]]; then dc_msg "**Google Drive: test builds purged.**"; fi
+    if [[ ${DC} = true ]]; then dc_msg "**Google Drive: test builds purged.**"; fi
 }
 autopilot() {
     if [[ $autopilotclean = yes ]]; then clean; fi
     cd $romdir1
     sync
-    if [[ $disnotif = yes ]]; then dc_msg "**Building ${name1}.**"; fi
+    if [[ ${DC} = true ]]; then dc_msg "**Building ${name1}.**"; fi
     DATE_START1=$(date +"%s")
     . build/envsetup.sh
     lunch aosp_sailfish-userdebug
     make aex ${PAR_THREAD} && rom1=successful
     DATE_END1=$(date +"%s")
     DIFF1=$(($DATE_END1 - $DATE_START1))
-        if [[ $disnotif = yes ]]; then
+        if [[ ${DC} = true ]]; then
             if [[ $rom1 = successful ]]; then
                 dc_msg "*Build Successful in $(($DIFF1 / 60)) minute(s).*"
             else 
@@ -121,12 +120,12 @@ autopilot() {
         fi
     cd $romdir2
     sync
-    if [[ $disnotif = yes ]]; then dc_msg "**Building ${name2}.**"; fi
+    if [[ ${DC} = true ]]; then dc_msg "**Building ${name2}.**"; fi
     DATE_START2=$(date +"%s")
     brinch && rom2=successful
     DATE_END2=$(date +"%s")
     DIFF2=$(($DATE_END2 - $DATE_START2))
-        if [[ $disnotif = yes ]]; then
+        if [[ ${DC} = true ]]; then
             if [[ $rom2 = successful ]]; then
                 dc_msg "*Build Succesful in $(($DIFF2 / 60)) minute(s).*"
             else
