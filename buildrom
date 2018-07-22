@@ -28,12 +28,11 @@ dc_chk
 # Functions
 sync() {
     info "Syncing Up."
-    repo sync ${PAR_THREAD} --no-tags --no-clone-bundle --force-sync -f -q
-        if [[ $? = 0 ]]; then
-            info "Sync Successful!"
-        else
-            error "Sync Failed!"
-        fi
+    if repo sync ${PAR_THREAD} --no-tags --no-clone-bundle --force-sync -f -q; then
+        info "Sync Successful!"
+    else
+        error "Sync Failed!" && exit 1
+    fi
 }
 clean() {
     info "Makin Clobber."
