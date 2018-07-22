@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 simg2img system.img system.raw
 mkdir system
 su -c 'mount system.raw system

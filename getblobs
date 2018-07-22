@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 URL=$1
 DIR=$(pwd)
 ZIP=$(basename ${URL})

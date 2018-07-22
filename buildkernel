@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-
-# Source common stuff
 source common
 
 # Clean the kernel directory
