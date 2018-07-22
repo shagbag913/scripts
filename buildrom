@@ -4,7 +4,6 @@ source common
 ### CONFIGURATION ###
 
 ### GDRIVE CONFIG ###
-usegdrive=yes
 GD_URL=http://gg.gg/shagbag913_roms
 GD_TESTURL=http://gg.gg/shagbag913_testbuilds
 ## Directories
@@ -67,7 +66,8 @@ linch() {
     . build/envsetup.sh
 }
 gdrive() {
-    if [[ $usegdrive = yes ]]; then
+    grive_chk
+    if [[ ${GDRIVE} = true ]]; then
         if [[ $test != true ]]; then
             cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
             cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
