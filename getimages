@@ -16,9 +16,9 @@ FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"$(echo ${FI_ZIP} | sed -n 's/-factory.*//; s/.*s
 # Sanity Checks ##
 ##################
 
-[[ -z ${FI_SAVE_DIR} ]] && echo -e "${RED}Save location not set! Exiting...${RESTORE}" && exit 1
-[[ ! -e ${FI_DOWNLOAD_DIR} ]] && echo -e "${RED}Save location ${FI_SAVE_DIR} does not exist! Exiting...${RESTORE}" && exit 1
-[[ -z ${URL} ]] && echo -e "${RED}No URL specified! Exiting...${RESTORE}" && exit 1
+[[ -z ${FI_SAVE_DIR} ]] && error "Save location not set! Exiting..." && exit 1
+[[ ! -e ${FI_DOWNLOAD_DIR} ]] && error "${RED}Save location ${FI_SAVE_DIR} does not exist! Exiting..." && exit 1
+[[ -z ${URL} ]] && error "No URL specified! Exiting..." && exit 1
 
 ################################
 ## Download the factory image ##
@@ -29,7 +29,7 @@ cd ${FI_DOWNLOAD_DIR} || return
 if [[ ! -e ${FI_ZIP} ]]; then
     wget "${URL}"
         if [[ $? -gt 0 ]]; then
-            echo -e "${RED}Download failed! Exiting...${RESTORE}" && exit 1
+            error "Download failed! Exiting..." && exit 1
         fi
 fi
 unzip "${FI_ZIP}"
