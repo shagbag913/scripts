@@ -41,8 +41,6 @@ clean() {
     make clobber
     cd $romdir2
     make clobber
-    cd $romdir3
-    make clobber
     if [[ ${DC} = true ]]; then dc_msg "Outputs Cleaned. These builds will take a while :grin:"; fi
 }
 brinch() {
@@ -56,13 +54,11 @@ gdrive() {
         if [[ $test != true ]]; then
             cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
             cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
-            cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdir3}
 	    cd ${GD_FOLDER} && grive
             dc_msg "**Google Drive: Builds uploaded. ${GD_URL}**"
         else
             cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdirtest}
             cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdirtest}
-            cp `ls -rt ${romdir3}/${out}/${romzip3}*.zip  | tail -1` ${gdirtest}
             cd ${GD_FOLDER} && grive
             dc_msg "**Google Drive: Test builds uploaded.** *Flash these at your own risk!* ${GD_TESTURL}"
         fi
@@ -87,7 +83,6 @@ gdrivepurgetest() {
     if [[ ${DC} = true ]]; then dc_msg "**Google Drive: test builds purged.**"; fi
 }
 autopilot() {
-    if [[ $autopilotclean = yes ]]; then clean; fi
     cd $romdir1
     sync
     if [[ ${DC} = true ]]; then dc_msg "**Building ${name1}.**"; fi
