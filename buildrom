@@ -6,6 +6,7 @@ source common
 ### GDRIVE CONFIG ###
 GD_URL=http://gg.gg/shagbag913_roms
 GD_TESTURL=http://gg.gg/shagbag913_testbuilds
+
 ## Directories
 gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
 gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
@@ -22,8 +23,6 @@ name2="Dirty Unicorns"
 romzip2=du_sailfish-v12
 
 out="out/target/product/${DEVICE}"
-
-dc_chk
 
 # Functions
 sync() {
@@ -48,7 +47,6 @@ brinch() {
     brunch ${DEVICE}
 }
 gdrive() {
-    grive_chk
     if [[ ${GDRIVE} = true ]]; then
         if [[ $test != true ]]; then
             cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
@@ -114,7 +112,12 @@ autopilot() {
         fi
     gdrive
 }
-while [ "$1" != "" ]; do
+
+# Checks
+grive_chk
+dc_chk
+
+while [ "$#" -ge 1 ]; do
     case $1 in
         -s | --sync ) sync;;
         -c | --clean ) clean;;
