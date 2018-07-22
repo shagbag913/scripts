@@ -11,12 +11,6 @@ gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
 gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
 gdirtest=/media/shagbag913/Roms/gdrive/TestBuilds
 
-# wether or not autopilot builds are clean or not, default is no.
-autopilot=
-
-# Here when it asks for "romzip", this means part of the ROM zip's name that does not change. For example, if the final ROM zip is named 
-# "AospExtended-v5.5-sailfish-20180602-0231-UNOFFICIAL", what I would put for the ROM name would be "AospExtended-v5.5-sailfish", this way the ROMS can be autouploaded.
-
 # Rom #1 Directory AND name of rom.
 romdir1=/media/shagbag913/Roms/roms/aex
 name1="Aosp Extended"
