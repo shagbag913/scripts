@@ -7,26 +7,26 @@ make clean
 rm -rf out/
 
 if [[ ${1} = "-c" ]]; then
-    echo -e "${BLUE}Building with Clang${RESTORE}"
+    info "Building with Clang"
     make O=out ARCH=arm64 shag_defconfig
     make -j6 O=out \
         ARCH=arm64 \
         CC="ccache /media/shagbag913/Roms/kernel/toolchains/linux-x86/clang-r328903/bin/clang" \
         CLANG_TRIPLE=aarch64-linux-gnu- \
-        CROSS_COMPILE="/media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-" && success=yes
+        CROSS_COMPILE="/media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-" && SUCCESS=true
     IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/out/arch/arm64/boot/Image.lz4-dtb"
 fi
 
 if [[ ${1} = "-g" ]]; then
-    echo -e "${BLUE}Building with GCC${RESTORE}"
+    info "Building with GCC"
     CROSS_COMPILE="ccache /media/shagbag913/Roms/kernel/toolchains/build-tools-gcc/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
     make shag_defconfig
-    make -j6 && success=yes
+    make -j6 && SUCCESS=true
     IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/arch/arm64/boot/Image.lz4-dtb"
 fi
 
-if [[ ${success} = yes ]]; then
-    echo -e "${GREEN}Kernel build successful!${RESTORE}"
+if [[ ${SUCCESS} = true ]]; then
+    info "Kernel build successful!"
     cd /media/shagbag913/Roms/kernel/ak2
     rm -rf Image.lz4-dtb
     cp ${IMAGE_DIR} .
@@ -35,5 +35,5 @@ if [[ ${success} = yes ]]; then
     rm -rf Kernel/*
     cp /media/shagbag913/Roms/kernel/ak2/ShagKernel*.zip ./Kernel
     grive
-    echo -e "${GREEN}Kernel uploaded to GDrive${RESTORE}"
+    info "Kernel uploaded to GDrive"
 fi
