@@ -6,14 +6,7 @@ source common
 ###############
 ## Variables ##
 ###############
-#
-# FI_DOWNLOAD_DIR: Directory to download the factory image to
-# FI_SAVE_DIR: Where to save the desired images
-# URL: URL to the direct download link of the factory image
-# FI_ZIP: The name of the factory image ZIP file
-# FI_FOLDER: The extracted factory image
-# IMAGE_ZIP: The zip containing all of the image files
-#
+
 FI_DOWNLOAD_DIR="/media/shagbag913/Roms/factimages"
 URL="$1"
 FI_ZIP="$(basename "${URL}")"
@@ -64,9 +57,5 @@ if [[ ${GDRIVE} = true ]]; then
         dc_msg "**Google Drive: $(date +%B)s vendor and boot images uploaded! ${GD_IMAGESURL}**"
     fi
 fi
-
-########################
-## Remove factory ZIP ##
-########################
 
 rm -rf "${FI_DOWNLOAD_DIR:?}/${FI_ZIP}"
