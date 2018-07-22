@@ -8,9 +8,10 @@
 ############
 ## Colors ##
 ############
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
+BLUE='\e[0;34m'
+GREEN='\e[0;32m'
+RED='\e[0;31m'
+YELLOW='\e[0;33m'
 RESTORE='\e[0m'
 
 # Device Codename
@@ -46,7 +47,7 @@ dc_msg() {
 # Check if "grive" is installed
 grive_chk() {
 if ! command -v grive > /dev/null; then
-    echo -e "${RED}grive is not installed! Install and configure grive to have your projects automatically uploaded to Google Drive!${RESTORE}"
+    warn "grive not installed! Not syncing to Google Drive..."
 else
     GDRIVE=true
 fi
@@ -54,3 +55,20 @@ fi
 
 # Google Drive folder location
 GD_FOLDER="/media/shagbag913/Roms/gdrive"
+
+error() {
+    printf '\n'
+    printf ${RED}'%0.s#' $(seq 1 ${#1})
+    printf '\n%s\n' "${1}"
+    printf '%0.s#' $(seq 1 ${#1})'${RESTORE}'
+    printf '\n\n'
+    printf ${RESTORE}
+}
+warn() {
+    printf '\n'
+    printf ${YELLOW}'%0.s#' $(seq 1 ${#1})
+    printf '\n%s\n' "${1}"
+    printf '%0.s#' $(seq 1 ${#1})'${RESTORE}'
+    printf '\n\n'
+    printf ${RESTORE}
+}
