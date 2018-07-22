@@ -64,10 +64,20 @@ error() {
     printf '\n\n'
     printf "${RESTORE}"
 }
+
 warn() {
     printf '\n'
     printf "${YELLOW}"'%0.s#'  $(seq 1 $((${#1}+6)))
     printf '\n%s\n' "WARN: ${1}"
+    printf '%0.s#' $(seq 1 $((${#1}+6)))
+    printf '\n\n'
+    printf "${RESTORE}"
+}
+
+info() {
+    printf '\n'
+    printf "${BLUE}"'%0.s#'  $(seq 1 $((${#1}+6)))
+    printf '\n%s\n' "INFO: ${1}"
     printf '%0.s#' $(seq 1 $((${#1}+6)))
     printf '\n\n'
     printf "${RESTORE}"
