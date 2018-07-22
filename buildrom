@@ -27,18 +27,16 @@ dc_chk
 
 # Functions
 sync() {
-    echo -e ""
-    echo -e "${RED}Syncing Up.${RESTORE}"
+    info "Syncing Up."
     repo sync ${PAR_THREAD} --no-tags --no-clone-bundle --force-sync -f -q
         if [[ $? = 0 ]]; then
-            echo -e "${BLUE}Sync Successful!${RESTORE}"
+            info "Sync Successful!"
         else
-            echo -e "${GREEN}Sync ${RED}Failed!${RESTORE}"
+            error "Sync Failed!"
         fi
 }
 clean() {
-    echo -e ""
-    echo -e "${RED}Makin Clobber.${RESTORE}"
+    info "Makin Clobber."
     cd $romdir1
     make clobber
     cd $romdir2
@@ -48,8 +46,7 @@ clean() {
     if [[ ${DC} = true ]]; then dc_msg "Outputs Cleaned. These builds will take a while :grin:"; fi
 }
 brinch() {
-    echo -e ""
-    echo -e "${RED}Brunching.${RESTORE}"
+    info "Brunching."
     . build/envsetup.sh
     brunch ${DEVICE}
 }
@@ -72,21 +69,21 @@ gdrive() {
     fi
 }
 gdrivepurge() {
-    echo -e "${RED} Cleaning GDrive Directories."
+    info "Cleaning GDrive Directories."
     for n in ${gdir1} ${gdir2}; do
         rm -rf $n/*
     done
     cd ${GD_FOLDER} 
     grive
-    echo -e "${GREEN}GDrive folders purged.${RESTORE}"
+    info "GDrive folders purged."
     if [[ ${DC} = true ]]; then dc_msg "**Google Drive: ROM's purged.**"; fi
 }
 gdrivepurgetest() {
-    echo -e "${RED} Cleaning GDrive Directories."
+    info "Cleaning GDrive Directories."
     rm -rf ${gdirtest}/*
     cd ${GD_FOLDER}
     grive
-    echo -e "${GREEN}GDrive folders purged.${RESTORE}"
+    info "GDrive folders purged."
     if [[ ${DC} = true ]]; then dc_msg "**Google Drive: test builds purged.**"; fi
 }
 autopilot() {
@@ -131,7 +128,7 @@ while [ "$1" != "" ]; do
         -p | --gdrivepurge ) gdrivepurge;;
         -tp | --gdrivetestpurge ) gdrivepurgetest;;
         -t | --test ) test=true;;
-        * ) echo -e "${GREEN} What are you doing!?${RESTORE}"; echo -e " ${RED}build $1${RESTORE} is not a supported command :/";;
+        * ) error "buildrom ${1} is not a supported command :/";;
     esac
 shift
 done
