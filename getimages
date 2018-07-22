@@ -27,10 +27,9 @@ FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"$(echo ${FI_ZIP} | sed -n 's/-factory.*//; s/.*s
 cd ${FI_DOWNLOAD_DIR} || return
 ## Only download the zip if it doesn't already exist ##
 if [[ ! -e ${FI_ZIP} ]]; then
-    wget "${URL}"
-        if [[ $? -gt 0 ]]; then
-            error "Download failed! Exiting..." && exit 1
-        fi
+    if ! wget "${URL}"; then
+        error "Download failed! Exiting..." && exit 1
+    fi
 fi
 unzip "${FI_ZIP}"
 cd "${FI_FOLDER}" || return
