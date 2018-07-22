@@ -59,11 +59,6 @@ brinch() {
     . build/envsetup.sh
     brunch ${DEVICE}
 }
-linch() {
-    echo -e ""
-    echo -e "${RED}Lunching.${RESTORE}"
-    . build/envsetup.sh
-}
 gdrive() {
     grive_chk
     if [[ ${GDRIVE} = true ]]; then
