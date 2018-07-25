@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 source common
 
+if [[ ! -e Makefile ]]; then error "Not in a kernel directory! Exiting..."; exit 1; fi
+
 # Clean the kernel directory
 make mrproper
 make clean
