@@ -9,7 +9,6 @@ FI_DOWNLOAD_DIR="/media/shagbag913/Roms/factimages"
 URL="$1"
 FI_ZIP="$(basename "${URL}")"
 FI_FOLDER="$(echo "${FI_ZIP}" | awk -F-factory '{print $1}')"
-IMAGE_ZIP="image-${FI_FOLDER}.zip"
 FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"$(echo ${FI_ZIP} | sed -n 's/-factory.*//; s/.*sailfish-//p')"
 
 ##################
@@ -33,7 +32,7 @@ if [[ ! -e ${FI_ZIP} ]]; then
 fi
 unzip "${FI_ZIP}"
 cd "${FI_FOLDER}" || return
-unzip "${IMAGE_ZIP}"
+unzip "image-${FI_FOLDER}.zip"
 ## Create the save directory if it does not exist ##
 [[ ! -e ${FI_SAVE_DIR} ]] && mkdir "${FI_SAVE_DIR}" && echo -e "${BLUE}Created directory ${FI_SAVE_DIR}${RESTORE}"
 cp vendor.img "${FI_SAVE_DIR}/"
