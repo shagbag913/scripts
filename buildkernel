@@ -29,13 +29,13 @@ fi
 
 if [[ ${SUCCESS} = true ]]; then
     info "Kernel build successful!"
-    cd /media/shagbag913/Roms/kernel/ak2
+    cd /media/shagbag913/Roms/kernel/shagkernel/ak2
     rm -rf Image.lz4-dtb
     cp ${IMAGE_DIR} .
     ./zip.sh
     cd /media/shagbag913/Roms/gdrive
     rm -rf Kernel/*
-    cp /media/shagbag913/Roms/kernel/ak2/ShagKernel*.zip ./Kernel
+    cp /media/shagbag913/Roms/kernel/shagkernel/ak2/ShagKernel*.zip ./Kernel
     grive
     info "Kernel uploaded to GDrive"
 fi
