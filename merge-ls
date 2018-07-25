@@ -24,4 +24,6 @@ if [[ v${VER} = ${LATEST_VER} ]]; then
 fi
 
 # Merge!
-git merge ${LATEST_VER}
+if ! git merge ${LATEST_VER}; then
+    error "Merge failed! Fix the conflicts!"
+fi
