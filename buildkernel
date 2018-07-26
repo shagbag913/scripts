@@ -30,7 +30,6 @@ fi
 if [[ ${SUCCESS} = true ]]; then
     info "Kernel build successful!"
     cd /media/shagbag913/Roms/kernel/shagkernel/ak2
-    rm -rf Image.lz4-dtb
     cp ${IMAGE_DIR} .
     ./zip.sh
     cd /media/shagbag913/Roms/gdrive
