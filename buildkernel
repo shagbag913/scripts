@@ -16,7 +16,7 @@ if [[ ${1} = "-c" ]]; then
         CC="ccache /media/shagbag913/Roms/kernel/toolchains/linux-x86/clang-r328903/bin/clang" \
         CLANG_TRIPLE=aarch64-linux-gnu- \
         CROSS_COMPILE="/media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-" && SUCCESS=true
-    IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/out/arch/arm64/boot/Image.lz4-dtb"
+    IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/out/arch/arm64/boot"
 fi
 
 if [[ ${1} = "-g" ]]; then
@@ -24,13 +24,14 @@ if [[ ${1} = "-g" ]]; then
     CROSS_COMPILE="ccache /media/shagbag913/Roms/kernel/toolchains/build-tools-gcc/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
     make shag_defconfig
     make -j6 && SUCCESS=true
-    IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/arch/arm64/boot/Image.lz4-dtb"
+    IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/arch/arm64/boot/"
 fi
 
 if [[ ${SUCCESS} = true ]]; then
     info "Kernel build successful!"
     cd /media/shagbag913/Roms/kernel/shagkernel/ak2
-    cp ${IMAGE_DIR} .
+    cp ${IMAGE_DIR}/Image.lz4 kernel/
+    cp ${IMAGE_DIR}/dts/htc/*dtb dtbs/
     ./zip.sh
     cd /media/shagbag913/Roms/gdrive
     rm -rf Kernel/*
