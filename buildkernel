@@ -3,35 +3,34 @@ source common
 
 if [[ ! -e Makefile ]]; then error "Not in a kernel directory! Exiting..."; exit 1; fi
 
-# Clean the kernel directory
+GCC_DIR="/media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/arch/arm64/boot"
+
 make mrproper
 make clean
-rm -rf out/
+
+export ARCH=arm64
+make shag_defconfig
 
 if [[ ${1} = "-c" ]]; then
     info "Building with Clang"
-    make O=out ARCH=arm64 shag_defconfig
-    make -j6 O=out \
-        ARCH=arm64 \
+    make ${PAR_THREAD} \
         CC="ccache /media/shagbag913/Roms/kernel/toolchains/linux-x86/clang-r328903/bin/clang" \
         CLANG_TRIPLE=aarch64-linux-gnu- \
-        CROSS_COMPILE="/media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-" && SUCCESS=true
-    IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/out/arch/arm64/boot"
+        CROSS_COMPILE="${GCC_DIR}" && SUCCESS=true
 fi
 
 if [[ ${1} = "-g" ]]; then
     info "Building with GCC"
-    CROSS_COMPILE="ccache /media/shagbag913/Roms/kernel/toolchains/build-tools-gcc/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
-    make shag_defconfig
-    make -j6 && SUCCESS=true
-    IMAGE_DIR="/media/shagbag913/Roms/kernel/shagkernel/arch/arm64/boot/"
+    make ${PAR_THREAD} \
+        CROSS_COMPILE="ccache ${GCC_DIR}" && SUCCESS=true
 fi
 
 if [[ ${SUCCESS} = true ]]; then
     info "Kernel build successful!"
     cd /media/shagbag913/Roms/kernel/shagkernel/ak2
     cp ${IMAGE_DIR}/Image.lz4 kernel/
-    cp ${IMAGE_DIR}/dts/htc/*dtb dtbs/
+    cp ${IMAGE_DIR}/dts/htc/*.dtb dtbs/
     ./zip.sh
     cd /media/shagbag913/Roms/gdrive
     rm -rf Kernel/*
