@@ -1,32 +1,26 @@
 #!/usr/bin/env bash
 
-#################################################
-## Common variables/functions and whatnot that ##
-## are used across all scripts in this repo    ##
-#################################################
+: '
+ This script contains common variables/functions
+ that are used across the scripts in this directory.
+'
 
-############
-## Colors ##
-############
 BLUE='\e[0;34m'
 GREEN='\e[0;32m'
 RED='\e[0;31m'
 YELLOW='\e[0;33m'
 RESTORE='\e[0m'
 
-# Device Codename
 DEVICE="sailfish"
 
 # Number of parallel threads to use when compiling 
 PAR_THREAD="-j$(($(nproc --all) * 2 - 2))"
 
-###########################
-## Discord configuration ##
-###########################
-
+# DISCORD CONFIG
 # Discord script location
 DC_SCRIPT="${HOME}/shagbot/dis.py"
 
+# Check if discord script exists
 dc_chk() {
 if [[ ! -e ${DC_SCRIPT} ]]; then
     warn "Discord bot not found at ${DC_SCRIPT}!"
@@ -35,15 +29,12 @@ else
 fi
 }
 
-# Message Discord function
+# Message discord function
 dc_msg() {
     echo "$1" | python3 "${DC_SCRIPT}"
 }
 
-################################
-## Google Drive configuration ##
-################################
-
+# GOOGLE DRIVE CONFIG
 # Check if "grive" is installed
 grive_chk() {
 if ! command -v grive > /dev/null; then
@@ -53,9 +44,9 @@ else
 fi
 }
 
-# Google Drive folder location
 GD_FOLDER="/media/shagbag913/Roms/gdrive"
 
+# BANNERS
 error() {
     printf "${RED}"'%0.s_' $(seq 1 $((${#1}+7)))
     printf '\n%s\n' "ERROR: ${1}"
