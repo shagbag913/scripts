@@ -48,25 +48,25 @@ GD_FOLDER="/media/shagbag913/Roms/gdrive"
 
 # BANNERS
 error() {
-    printf "${RED}"'%0.s_' $(seq 1 $((${#1}+7)))
+    printf "${RED}"'%0.s-' $(seq 1 $((${#1}+7)))
     printf '\n%s\n' "ERROR: ${1}"
-    printf '%0.s‾' $(seq 1 $((${#1}+7)))
+    printf '%0.s-' $(seq 1 $((${#1}+7)))
     printf '\n'
     printf "${RESTORE}"
 }
 
 warn() {
-    printf "${YELLOW}"'%0.s_'  $(seq 1 $((${#1}+6)))
+    printf "${YELLOW}"'%0.s-'  $(seq 1 $((${#1}+6)))
     printf '\n%s\n' "WARN: ${1}"
-    printf '%0.s‾' $(seq 1 $((${#1}+6)))
+    printf '%0.s-' $(seq 1 $((${#1}+6)))
     printf '\n'
     printf "${RESTORE}"
 }
 
 info() {
-    printf "${BLUE}"'%0.s_'  $(seq 1 $((${#1}+6)))
+    printf "${BLUE}"'%0.s-'  $(seq 1 $((${#1}+6)))
     printf '\n%s\n' "INFO: ${1}"
-    printf '%0.s‾' $(seq 1 $((${#1}+6)))
+    printf '%0.s-' $(seq 1 $((${#1}+6)))
     printf '\n'
     printf "${RESTORE}"
 }
