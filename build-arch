@@ -42,7 +42,7 @@ cd "${HOME}"/bin || exit
 
 # Add stuff to ~/.bashrc if it is not already there
 src=0
-for e in "export LC_ALL=C" "PATH="${HOME}/bin:${PATH}""; do
+for e in "export LC_ALL=C" 'PATH="${HOME}/bin:${PATH}"'; do
     if ! cat "${HOME}"/.bashrc | grep "$e" &>/dev/null; then
         echo "$e" >> "${HOME}"/.bashrc
         src=$(("${src}"+1))
