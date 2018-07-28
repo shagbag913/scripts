@@ -18,12 +18,13 @@ MAJOR_VER=${VER%.*}
 # Latest upstream version
 LATEST_VER=$(git tag --sort=-taggerdate -l v"${MAJOR_VER}"* | head -n 1)
 
-# Exit the script if the kernel version is already the latest
-if [[ v${VER} = "${LATEST_VER}" ]]; then
-    info "Kernel already up to date! :)" && exit 1
-fi
-
-# Merge!
-if ! git merge "${LATEST_VER}"; then
+if [[ ${1} != "-rc" ]]; then
+    if [[ v${VER} = "${LATEST_VER}" ]]; then
+        info "Kernel already up to date! :)" && exit 1
+    fi
+    if ! git merge "${LATEST_VER}"; then
+        error "Merge failed! Fix the conflicts!"
+    fi
+elif ! git merge linux-stable-rc/linux-${MAJOR_VER}.y; then
     error "Merge failed! Fix the conflicts!"
 fi
