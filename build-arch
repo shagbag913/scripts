@@ -10,7 +10,7 @@ if ! source common &>/dev/null; then
 fi
 
 # Detect installed AUR helper
-for a in pakku yaourt aurman; do
+for a in trizen pakku yaourt aurman; do
     if command -v "${a}" &>/dev/null; then
          AUR_HELPER="${a}" && break
     fi
@@ -32,7 +32,7 @@ fi
 
 # Install the needed packages to build
 info "Installing all of the necessary packages. This may take a while."
-sleep 2
+sleep 1
 "${AUR_HELPER}" -S --noconfirm jdk8-openjdk aosp-devel lineageos-devel
 
 # symlink python2 to python
