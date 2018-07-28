@@ -40,7 +40,14 @@ sleep 1
 cd "${HOME}"/bin
 [ ! -e "${HOME}"/bin/python ] && ln -s $(which python2) python
 
-# Add stuff to ~/.bashrc
-echo "export LC_ALL=C" >> "${HOME}"/.bashrc
-echo 'PATH="${HOME}/bin:${PATH}"' >> "${HOME}"/.bashrc
-info "Please type 'source ~/.bashrc' below, then you'll be ready to compile."
+# Add stuff to ~/.bashrc if it is not already there
+src=0
+for e in 'export LC_ALL=C' 'PATH="${HOME}/bin:${PATH}"'; do
+    if ! cat "${HOME}"/.bashrc | grep "$e" &>/dev/null; then
+        echo "$e" >> "${HOME}"/.bashrc
+        src=$(("${src}"+1))
+        if [[ "${src}" = 1 ]]; then
+            info "Type 'source ~/.bashrc' to complete set up!"
+        fi
+    fi
+done
