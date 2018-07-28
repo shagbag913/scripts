@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source common
 
-if [[ ! -e Makefile ]]; then error "Not in a kernel directory! Exiting..." && exit 1; fi
+if [[ ! -e Makefile ]]; then { error "Not in a kernel directory! Exiting..."; exit 1; }; fi
 
 # Fetch/add stable-rc remote if it does not exist
 if git remote add linux-stable-rc https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/ &>/dev/null; then
@@ -25,6 +25,6 @@ if [[ ${1} != "-rc" ]]; then
     if ! git merge "${LATEST_VER}"; then
         error "Merge failed! Fix the conflicts!"
     fi
-elif ! git merge linux-stable-rc/linux-${MAJOR_VER}.y; then
+elif ! git merge linux-stable-rc/linux-"${MAJOR_VER}".y; then
     error "Merge failed! Fix the conflicts!"
 fi

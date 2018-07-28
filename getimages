@@ -8,21 +8,19 @@ FI_FOLDER="$(echo "${FI_ZIP}" | awk -F-factory '{print $1}')"
 BUILD_NUM="$(echo "${FI_ZIP}" | sed -n 's/-factory.*//; s/.*sailfish-//p')"
 FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${BUILD_NUM}"
 
-[[ -z ${FI_SAVE_DIR} ]] && error "Save location not set! Exiting..." && exit 1
-[[ ! -e ${FI_DOWNLOAD_DIR} ]] && error "${RED}Save location ${FI_SAVE_DIR} does not exist! Exiting..." && exit 1
-[[ -z ${URL} ]] && error "No URL specified! Exiting..." && exit 1
+[[ -z ${FI_SAVE_DIR} ]] && { error "Save location not set! Exiting..."; exit 1; }
+[[ ! -e ${FI_DOWNLOAD_DIR} ]] && { error "${RED}Save location ${FI_SAVE_DIR} does not exist! Exiting..."; exit 1; }
+[[ -z ${URL} ]] && { error "No URL specified! Exiting..."; exit 1; }
 
 cd ${FI_DOWNLOAD_DIR} || return
 if [[ ! -e ${FI_ZIP} ]]; then
-    if ! wget "${URL}"; then
-        error "Download failed! Exiting..." && exit 1
-    fi
+    if ! wget "${URL}"; then { error "Download failed! Exiting..."; exit 1; }; fi
 fi
 
 unzip "${FI_ZIP}"
 cd "${FI_FOLDER}" || return
 unzip "image-${FI_FOLDER}.zip"
-[[ ! -e ${FI_SAVE_DIR} ]] && mkdir "${FI_SAVE_DIR}" && info "Created directory ${FI_SAVE_DIR}"
+[[ ! -e ${FI_SAVE_DIR} ]] && { mkdir "${FI_SAVE_DIR}"; info "Created directory ${FI_SAVE_DIR}"; }
 cp vendor.img "${FI_SAVE_DIR}/"
 cp boot.img "${FI_SAVE_DIR}/"
 
