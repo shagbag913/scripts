@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# source common, download if it does not exist
+if ! source common &>/dev/null; then
+    echo -e "\e[0;34m---------------------------------------------"
+    echo -e "INFO:'common' script not found, downloading.."
+    echo -e "---------------------------------------------\e[0m"
+    wget https://github.com/shagbag913/scripts/raw/master/common &>/dev/null
+    source common
+fi
+
+# Detect installed AUR helper
+for a in pakku yaourt aurman; do
+    if command -v "${a}" &>/dev/null; then
+         AUR_HELPER="${a}" && break
+    fi
+done
+
+if ! command -v git &>/dev/null; then
+    info "Installing 'git'"
+    sudo pacman -S --noconfirm git
+fi
+
+# Install pakku if no AUR helper was found
+if [[ -z "${AUR_HELPER}" ]]; then
+    info "No AUR helper was found. Installing pakku.."
+    cd /tmp
+    git clone https://aur.archlinux.org/pakku.git
+    cd pakku && makepkg -si
+    AUR_HELPER=pakku
+fi
+
+# Install the needed packages to build
+info "Installing all of the necessary packages. This may take a while."
+sleep 2
+"${AUR_HELPER}" -S --noconfirm jdk8-openjdk aosp-devel lineageos-devel
+
+# symlink python2 to python
+[ ! -d "${HOME}"/bin ] && mkdir "${HOME}"/bin
+cd "${HOME}"/bin
+[ ! -e "${HOME}"/bin/python ] && ln -s $(which python2) python
+
+# Add stuff to ~/.bashrc
+echo "export LC_ALL=C" >> "${HOME}"/.bashrc
+echo 'PATH="${HOME}/bin:${PATH}"' >> "${HOME}"/.bashrc
+info "Please type 'source ~/.bashrc' below, then you'll be ready to compile."
