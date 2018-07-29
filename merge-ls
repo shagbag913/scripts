@@ -3,13 +3,13 @@ source common
 
 if [[ ! -e Makefile ]]; then { error "Not in a kernel directory! Exiting..."; exit 1; }; fi
 
-# Fetch/add stable-rc remote if it does not exist
-if git remote add linux-stable-rc https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/ &>/dev/null; then
-    info "Added remote 'linux-stable-rc'"
+# Fetch/add stable remote if it does not exist
+if git remote add linux-stable https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ &>/dev/null; then
+    info "Added remote 'linux-stable'"
 fi
 
-info "Fetching latest stable-rc kernel tree"
-git fetch linux-stable-rc
+info "Fetching latest stable kernel tree"
+git fetch linux-stable
 
 # Current kernel version numbers
 VER=$(make kernelversion)
