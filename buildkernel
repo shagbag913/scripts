@@ -29,8 +29,8 @@ fi
 if [[ ${SUCCESS} = true ]]; then
     info "Kernel build successful!"
     cd /media/shagbag913/Roms/kernel/shagkernel/ak2 || { error "Couldn't find AnyKernel2 folder!"; exit 1; }
-    cp ${IMAGE_DIR}/Image.lz4 kernel/
-    cp ${IMAGE_DIR}/dts/htc/*.dtb dtbs/
+    mkdir kernel && cp ${IMAGE_DIR}/Image.lz4 kernel/
+    mkdir dtbs && cp ${IMAGE_DIR}/dts/htc/*.dtb dtbs/
     ./zip.sh
     cd /media/shagbag913/Roms/gdrive || { warn "Couldn't find GDrive folder! Not uploading to gdrive.."; exit 1; }
     rm -rf Kernel/*
