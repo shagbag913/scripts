@@ -24,9 +24,10 @@ fi
 # Install pakku if no AUR helper was found
 if [[ -z "${AUR_HELPER}" ]]; then
     info "No AUR helper was found. Installing pakku.."
+    sleep 1
     cd "${TMPDIR:-/tmp}" || exit
     git clone https://aur.archlinux.org/pakku.git
-    cd pakku && makepkg -si
+    cd pakku && makepkg -si --noconfirm
     AUR_HELPER=pakku
 fi
 
