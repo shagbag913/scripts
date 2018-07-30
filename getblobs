@@ -5,12 +5,12 @@ DIR=$(pwd)
 ZIP=$(basename ${URL})
 IMAGE=$(echo ${ZIP} | awk -F-factory '{print $1}')
 FOLDER=${DIR}/${IMAGE}
-FOLDER_EXTRACTED=${FOLDER}/${IMAGE}_extracted
-export FOLDER_BLOBS=${FOLDER}_blobs
+FOLDER_EXTRACTED="${FOLDER}"/${IMAGE}_extracted
+export FOLDER_BLOBS="${FOLDER}"_blobs
 mkdir -p ${FOLDER_BLOBS}
 wget ${URL}
 unzip ${ZIP}
-cd ${FOLDER}
+cd "${FOLDER}"
 mkdir -p ${FOLDER_EXTRACTED}
 unzip image-${IMAGE}.zip -d ${FOLDER_EXTRACTED}
 cd ${FOLDER_EXTRACTED}
@@ -26,32 +26,32 @@ umount system_work;
 umount vendor_work;
 chown -R ${USER} ${FOLDER_BLOBS}'
 rm -f ${ZIP}
-rm -rf ${FOLDER}
+rm -rf "${FOLDER}"
 cd ${DIR}
 if [[ $2 = -r ]]; then 
-  dev=${PWD}/device-proprietary-files.txt
+  DEV=${PWD}/device-proprietary-files.txt
   cp -r ${FOLDER_BLOBS}/vendor/app/* ${FOLDER_BLOBS}/system/priv-app/
   if ! grep -Fxq "# Vendor APKs" device-proprietary-files.txt; then
-    echo "" >> ${dev}
-    echo "# Vendor APKs" >> ${dev}
-    echo "-priv-app/atfwd/atfwd.apk" >> ${dev}
-    echo "-priv-app/colorservice/colorservice.apk" >> ${dev}
-    echo "-priv-app/datastatusnotification/datastatusnotification.apk" >> ${dev}
-    echo "-priv-app/embms/embms.apk" >> ${dev}
-    echo "priv-app/embms/oem/config_params.xml" >> ${dev}
-    echo "priv-app/embms/oem/provisioning_params.xml" >> ${dev}
-    echo "priv-app/embms/oem/verizon_config_params.txt" >> ${dev}
-    echo "-priv-app/fastdormancy/fastdormancy.apk" >> ${dev}
-    echo "-priv-app/ims/ims.apk" >> ${dev}
-    echo "-priv-app/imssettings/imssettings.apk" >> ${dev}
-    echo "-priv-app/QAS_DVC_MSP/QAS_DVC_MSP.apk" >> ${dev}
-    echo "-priv-app/QtiTelephonyService/QtiTelephonyService.apk" >> ${dev}
-    echo "-priv-app/radioconfig/radioconfig.apk" >> ${dev}
-    echo "-priv-app/RCSBootstraputil/RCSBootstraputil.apk" >> ${dev}
-    echo "-priv-app/SecureExtAuthService/SecureExtAuthService.apk" >> ${dev}
-    echo "-priv-app/shutdownlistener/shutdownlistener.apk" >> ${dev}
-    echo "priv-app/SSRestartDetector/SSRestartDetector.apk" >> ${dev}
-    echo "-priv-app/TimeService/TimeService.apk" >> ${dev}
-    echo "-priv-app/vzw_msdc_api/vzw_msdc_api.apk" >> ${dev}
+    echo "" >> "${DEV}"
+    echo "# Vendor APKs" >> "${DEV}"
+    echo "-priv-app/atfwd/atfwd.apk" >> "${DEV}"
+    echo "-priv-app/colorservice/colorservice.apk" >> "${DEV}"
+    echo "-priv-app/datastatusnotification/datastatusnotification.apk" >> "${DEV}"
+    echo "-priv-app/embms/embms.apk" >> "${DEV}"
+    echo "priv-app/embms/oem/config_params.xml" >> "${DEV}"
+    echo "priv-app/embms/oem/provisioning_params.xml" >> "${DEV}"
+    echo "priv-app/embms/oem/verizon_config_params.txt" >> "${DEV}"
+    echo "-priv-app/fastdormancy/fastdormancy.apk" >> "${DEV}"
+    echo "-priv-app/ims/ims.apk" >> "${DEV}"
+    echo "-priv-app/imssettings/imssettings.apk" >> "${DEV}"
+    echo "-priv-app/QAS_DVC_MSP/QAS_DVC_MSP.apk" >> "${DEV}"
+    echo "-priv-app/QtiTelephonyService/QtiTelephonyService.apk" >> "${DEV}"
+    echo "-priv-app/radioconfig/radioconfig.apk" >> "${DEV}"
+    echo "-priv-app/RCSBootstraputil/RCSBootstraputil.apk" >> "${DEV}"
+    echo "-priv-app/SecureExtAuthService/SecureExtAuthService.apk" >> "${DEV}"
+    echo "-priv-app/shutdownlistener/shutdownlistener.apk" >> "${DEV}"
+    echo "priv-app/SSRestartDetector/SSRestartDetector.apk" >> "${DEV}"
+    echo "-priv-app/TimeService/TimeService.apk" >> "${DEV}"
+    echo "-priv-app/vzw_msdc_api/vzw_msdc_api.apk" >> "${DEV}"
   fi
 fi

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source common
 
-if [[ ! -e Makefile ]]; then { error "Not in a kernel directory! Exiting..."; exit 1; }; fi
+if [[ ! -e Makefile ]]; then error "Not in a kernel directory! Exiting..."; fi
 
 # Fetch/add stable remote if it does not exist
 if git remote add linux-stable https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ &>/dev/null; then

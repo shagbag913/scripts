@@ -8,13 +8,13 @@ FI_FOLDER="$(echo "${FI_ZIP}" | awk -F-factory '{print $1}')"
 BUILD_NUM="$(echo "${FI_ZIP}" | sed -n 's/-factory.*//; s/.*sailfish-//p')"
 FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${BUILD_NUM}"
 
-[[ -z ${FI_SAVE_DIR} ]] && { error "Save location not set! Exiting..."; exit 1; }
-[[ ! -e ${FI_DOWNLOAD_DIR} ]] && { error "${RED}Save location ${FI_SAVE_DIR} does not exist! Exiting..."; exit 1; }
-[[ -z ${URL} ]] && { error "No URL specified! Exiting..."; exit 1; }
+[[ -z ${FI_SAVE_DIR} ]] && error "Save location not set! Exiting..."
+[[ ! -e ${FI_DOWNLOAD_DIR} ]] && error "${RED}Save location ${FI_SAVE_DIR} does not exist! Exiting..."
+[[ -z ${URL} ]] && error "No URL specified! Exiting..."
 
 cd ${FI_DOWNLOAD_DIR} || return
 if [[ ! -e ${FI_ZIP} ]]; then
-  if ! wget "${URL}"; then { error "Download failed! Exiting..."; exit 1; }; fi
+  if ! wget "${URL}"; then error "Download failed! Exiting..."; fi
 fi
 
 unzip "${FI_ZIP}"

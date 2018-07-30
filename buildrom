@@ -30,7 +30,7 @@ sync() {
   if repo sync ${PAR_THREAD} --no-tags --no-clone-bundle --force-sync -f -q; then
     info "Sync Successful!"
   else
-    error "Sync Failed!" && exit 1
+    error "Sync Failed!"
   fi
 }
 clean() {
