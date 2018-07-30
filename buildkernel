@@ -4,12 +4,24 @@ source common
 if [[ ! -e Makefile ]]; then { error "Not in a kernel directory! Exiting..."; exit 1; }; fi
 GCC_DIR="/media/shagbag913/Roms/kernel/toolchains/build-tools-gcc/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
 export ARCH=arm64
+
+while [[ "${#}" -ge 1 ]]; do
+    case "${1}" in
+        "-d") DIRTY=true;;
+        "-g") GCC=true;;
+        "-c") CLANG=true;;
+    esac
+    shift
+done
+
+if [[ -z "${DIRTY}" ]]; then
+    make clean
+    make mrproper
+fi
+
 make shag_defconfig
 
-make mrproper
-make clean
-
-if [[ ${1} = "-c" ]]; then
+if [[ -n "${CLANG}" ]]; then
     info "Building with Clang"
     make "${PAR_THREAD}" \
         CC="ccache /media/shagbag913/Roms/kernel/toolchains/linux-x86/clang-r328903/bin/clang" \
@@ -17,7 +29,7 @@ if [[ ${1} = "-c" ]]; then
         CROSS_COMPILE="${GCC_DIR}" && SUCCESS=true
 fi
 
-if [[ ${1} = "-g" ]]; then
+if [[ -n "${GCC}" ]]; then
     info "Building with GCC"
     make "${PAR_THREAD}" \
         CROSS_COMPILE="ccache ${GCC_DIR}" && SUCCESS=true
