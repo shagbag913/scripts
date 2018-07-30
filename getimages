@@ -14,7 +14,7 @@ FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${BUILD_NUM}"
 
 cd ${FI_DOWNLOAD_DIR} || return
 if [[ ! -e ${FI_ZIP} ]]; then
-    if ! wget "${URL}"; then { error "Download failed! Exiting..."; exit 1; }; fi
+  if ! wget "${URL}"; then { error "Download failed! Exiting..."; exit 1; }; fi
 fi
 
 unzip "${FI_ZIP}"
@@ -27,14 +27,14 @@ cp boot.img "${FI_SAVE_DIR}/"
 # TRANSFER IMAGES TO GOOGLE DRIVE
 grive_chk
 if [[ ${GDRIVE} = true ]]; then
-    GD_IMAGESURL=http://gg.gg/shagbag913_images
-    cp -r "${FI_SAVE_DIR}" "${GD_FOLDER}"/Images
-    cd "${GD_FOLDER}" || return
-    grive
-    dc_chk
-    if [[ ${DC} = true ]]; then
-        dc_msg "**Google Drive: ${BUILD_NUM} vendor and boot images uploaded! ${GD_IMAGESURL}**"
-    fi
+  GD_IMAGESURL=http://gg.gg/shagbag913_images
+  cp -r "${FI_SAVE_DIR}" "${GD_FOLDER}"/Images
+  cd "${GD_FOLDER}" || return
+  grive
+  dc_chk
+  if [[ ${DC} = true ]]; then
+    dc_msg "**Google Drive: ${BUILD_NUM} vendor and boot images uploaded! ${GD_IMAGESURL}**"
+  fi
 fi
 
 # REMOVE FACTORY IMAGE ZIP

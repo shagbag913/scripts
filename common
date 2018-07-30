@@ -23,24 +23,24 @@ DC_SCRIPT="${HOME}/shagbot/dis.py"
 # Check if discord script exists
 dc_chk() {
 if [[ ! -e ${DC_SCRIPT} ]]; then
-    warn "Discord bot not found at ${DC_SCRIPT}!"
+  warn "Discord bot not found at ${DC_SCRIPT}!"
 else
-    DC=true
+  DC=true
 fi
 }
 
 # Message discord function
 dc_msg() {
-    echo "$1" | python3 "${DC_SCRIPT}"
+  echo "$1" | python3 "${DC_SCRIPT}"
 }
 
 # GOOGLE DRIVE CONFIG
 # Check if "grive" is installed
 grive_chk() {
 if ! command -v grive > /dev/null; then
-    warn "grive not installed! Not syncing to GDrive..."
+  warn "grive not installed! Not syncing to GDrive..."
 else
-    GDRIVE=true
+  GDRIVE=true
 fi
 }
 
@@ -48,25 +48,25 @@ GD_FOLDER="/media/shagbag913/Roms/gdrive"
 
 # BANNERS
 error() {
-    printf "${RED}"'%0.s-' $(seq 1 $((${#1}+7)))
-    printf '\n%s\n' "ERROR: ${1}"
-    printf '%0.s-' $(seq 1 $((${#1}+7)))
-    printf '\n'
-    printf "${RESTORE}"
+  printf "${RED}"'%0.s-' $(seq 1 $((${#1}+7)))
+  printf '\n%s\n' "ERROR: ${1}"
+  printf '%0.s-' $(seq 1 $((${#1}+7)))
+  printf '\n'
+  printf "${RESTORE}"
 }
 
 warn() {
-    printf "${YELLOW}"'%0.s-'  $(seq 1 $((${#1}+6)))
-    printf '\n%s\n' "WARN: ${1}"
-    printf '%0.s-' $(seq 1 $((${#1}+6)))
-    printf '\n'
-    printf "${RESTORE}"
+  printf "${YELLOW}"'%0.s-'  $(seq 1 $((${#1}+6)))
+  printf '\n%s\n' "WARN: ${1}"
+  printf '%0.s-' $(seq 1 $((${#1}+6)))
+  printf '\n'
+  printf "${RESTORE}"
 }
 
 info() {
-    printf "${BLUE}"'%0.s-'  $(seq 1 $((${#1}+6)))
-    printf '\n%s\n' "INFO: ${1}"
-    printf '%0.s-' $(seq 1 $((${#1}+6)))
-    printf '\n'
-    printf "${RESTORE}"
+  printf "${BLUE}"'%0.s-'  $(seq 1 $((${#1}+6)))
+  printf '\n%s\n' "INFO: ${1}"
+  printf '%0.s-' $(seq 1 $((${#1}+6)))
+  printf '\n'
+  printf "${RESTORE}"
 }

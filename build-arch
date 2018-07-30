@@ -2,33 +2,33 @@
 
 # source common, download if it does not exist
 if ! source common &>/dev/null; then
-    echo -e "\e[0;34m---------------------------------------------"
-    echo -e "INFO:'common' script not found, downloading.."
-    echo -e "---------------------------------------------\e[0m"
-    wget https://github.com/shagbag913/scripts/raw/master/common &>/dev/null
-    source common
+  echo -e "\e[0;34m---------------------------------------------"
+  echo -e "INFO:'common' script not found, downloading.."
+  echo -e "---------------------------------------------\e[0m"
+  wget https://github.com/shagbag913/scripts/raw/master/common &>/dev/null
+  source common
 fi
 
 # Detect installed AUR helper
 for a in trizen pakku yaourt aurman; do
-    if command -v "${a}" &>/dev/null; then
-         AUR_HELPER="${a}" && break
-    fi
+  if command -v "${a}" &>/dev/null; then
+     AUR_HELPER="${a}" && break
+  fi
 done
 
 if ! command -v git &>/dev/null; then
-    info "Installing 'git'"
-    sudo pacman -S --noconfirm git
+  info "Installing 'git'"
+  sudo pacman -S --noconfirm git
 fi
 
 # Install pakku if no AUR helper was found
 if [[ -z "${AUR_HELPER}" ]]; then
-    info "No AUR helper was found. Installing pakku.."
-    sleep 1
-    cd "${TMPDIR:-/tmp}" || exit
-    git clone https://aur.archlinux.org/pakku.git
-    cd pakku && makepkg -si --noconfirm
-    AUR_HELPER=pakku
+  info "No AUR helper was found. Installing pakku.."
+  sleep 1
+  cd "${TMPDIR:-/tmp}" || exit
+  git clone https://aur.archlinux.org/pakku.git
+  cd pakku && makepkg -si --noconfirm
+  AUR_HELPER=pakku
 fi
 
 # Install the needed packages to build
@@ -44,11 +44,11 @@ cd "${HOME}"/bin || exit
 # Add stuff to ~/.bashrc if it is not already there
 src=0
 for e in "export LC_ALL=C" 'PATH="${HOME}/bin:${PATH}"'; do
-    if ! cat "${HOME}"/.bashrc | grep "$e" &>/dev/null; then
-        echo "$e" >> "${HOME}"/.bashrc
-        src=$(("${src}"+1))
-        if [[ "${src}" = 1 ]]; then
-            info "Type 'source ~/.bashrc' to complete set up!"
-        fi
+  if ! cat "${HOME}"/.bashrc | grep "$e" &>/dev/null; then
+    echo "$e" >> "${HOME}"/.bashrc
+    src=$(("${src}"+1))
+    if [[ "${src}" = 1 ]]; then
+      info "Type 'source ~/.bashrc' to complete set up!"
     fi
+  fi
 done
