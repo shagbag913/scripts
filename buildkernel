@@ -2,14 +2,12 @@
 source common
 
 if [[ ! -e Makefile ]]; then { error "Not in a kernel directory! Exiting..."; exit 1; }; fi
-
-GCC_DIR="/media/shagbag913/Roms/kernel/toolchains/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+GCC_DIR="/media/shagbag913/Roms/kernel/toolchains/build-tools-gcc/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+export ARCH=arm64
+make shag_defconfig
 
 make mrproper
 make clean
-
-export ARCH=arm64
-make shag_defconfig
 
 if [[ ${1} = "-c" ]]; then
     info "Building with Clang"
