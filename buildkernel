@@ -41,9 +41,7 @@ if [[ ${SUCCESS} = true ]]; then
   cd /media/shagbag913/Roms/kernel/shagkernel/ak2 || error "Couldn't find AnyKernel2 folder!"
   cp /media/shagbag913/Roms/kernel/shagkernel/arch/arm64/boot/Image.lz4-dtb .
   ./zip.sh
-  cd /media/shagbag913/Roms/gdrive || error "Couldn't find GDrive folder! Not uploading to gdrive.."
-  rm -rf Kernel/*
-  cp /media/shagbag913/Roms/kernel/shagkernel/ak2/ShagKernel*.zip ./Kernel
-  grive
-  info "Kernel uploaded to GDrive"
+  rm -rf "${GD_FOLDER}"/Kernel/*
+  cp /media/shagbag913/Roms/kernel/shagkernel/ak2/ShagKernel*.zip "${GD_FOLDER}"/Kernel
+  grive -p "${GD_FOLDER}" && info "Kernel uploaded to GDrive"
 fi

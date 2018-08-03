@@ -29,8 +29,7 @@ grive_chk
 if [[ ${GDRIVE} = true ]]; then
   GD_IMAGESURL=http://gg.gg/shagbag913_images
   cp -r "${FI_SAVE_DIR}/." "${GD_FOLDER}/Images/${DEVICE}/${BUILD_NUM}"
-  cd "${GD_FOLDER}" || return
-  grive
+  grive -p "${GD_FOLDER}"
   dc_chk
   if [[ ${DC} = true ]]; then
     dc_msg "**Google Drive: ${BUILD_NUM} vendor and boot images for ${DEVICE} uploaded! ${GD_IMAGESURL}**"
