@@ -23,9 +23,7 @@ DC_SCRIPT="${HOME}/shagbot/dis.py"
 # Check if discord script exists
 dc_chk() {
 if [[ ! -e ${DC_SCRIPT} ]]; then
-  warn "Discord bot not found at ${DC_SCRIPT}!"
-else
-  DC=true
+  warn "Discord bot not found at ${DC_SCRIPT}!" && return 1
 fi
 }
 
@@ -35,16 +33,17 @@ dc_msg() {
 }
 
 # GOOGLE DRIVE CONFIG
+
+GD_FOLDER="/media/shagbag913/Roms/gdrive"
+
 # Check if "grive" is installed
 grive_chk() {
 if ! command -v grive > /dev/null; then
-  warn "grive not installed! Not syncing to GDrive..."
-else
-  GDRIVE=true
+  warn "grive not installed! Not syncing to GDrive..." && return 1
+elif [[ ! -d "${GD_FOLDER}" ]]; then
+  warn "Cannot find GDrive directory! Not syncing to GDrive..." && return 1
 fi
 }
-
-GD_FOLDER="/media/shagbag913/Roms/gdrive"
 
 # BANNERS
 error() {

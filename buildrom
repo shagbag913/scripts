@@ -39,7 +39,7 @@ clean() {
   make clobber
   cd $romdir2
   make clobber
-  if [[ ${DC} = true ]]; then dc_msg "Outputs Cleaned. These builds will take a while :grin:"; fi
+  if dc_chk; then dc_msg "Outputs Cleaned. These builds will take a while :grin:"; fi
 }
 brinch() {
   info "Brunching."
@@ -47,7 +47,7 @@ brinch() {
   brunch ${DEVICE}
 }
 gdrive() {
-  if [[ ${GDRIVE} = true ]]; then
+  if grive_chk; then
     if [[ $test != true ]]; then
       cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
       cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
@@ -69,7 +69,7 @@ gdrivepurge() {
   cd ${GD_FOLDER} 
   grive
   info "GDrive folders purged."
-  if [[ ${DC} = true ]]; then dc_msg "**Google Drive: ROM's purged.**"; fi
+  if dc_chk; then dc_msg "**Google Drive: ROM's purged.**"; fi
 }
 gdrivepurgetest() {
   info "Cleaning GDrive Directories."
@@ -77,19 +77,19 @@ gdrivepurgetest() {
   cd ${GD_FOLDER}
   grive
   info "GDrive folders purged."
-  if [[ ${DC} = true ]]; then dc_msg "**Google Drive: test builds purged.**"; fi
+  if dc_chk; then dc_msg "**Google Drive: test builds purged.**"; fi
 }
 autopilot() {
   cd $romdir1
   sync
-  if [[ ${DC} = true ]]; then dc_msg "**Building ${name1}.**"; fi
+  if dc_chk; then dc_msg "**Building ${name1}.**"; fi
   DATE_START1=$(date +"%s")
   . build/envsetup.sh
   lunch aosp_sailfish-userdebug
   make aex ${PAR_THREAD} && rom1=successful
   DATE_END1=$(date +"%s")
   DIFF1=$(($DATE_END1 - $DATE_START1))
-    if [[ ${DC} = true ]]; then
+    if dc_chk; then
       if [[ $rom1 = successful ]]; then
         dc_msg "*Build Successful in $(($DIFF1 / 60)) minute(s).*"
       else 
@@ -98,12 +98,12 @@ autopilot() {
     fi
   cd $romdir2
   sync
-  if [[ ${DC} = true ]]; then dc_msg "**Building ${name2}.**"; fi
+  if dc_chk; then dc_msg "**Building ${name2}.**"; fi
   DATE_START2=$(date +"%s")
   brinch && rom2=successful
   DATE_END2=$(date +"%s")
   DIFF2=$(($DATE_END2 - $DATE_START2))
-    if [[ ${DC} = true ]]; then
+    if dc_chk; then
       if [[ $rom2 = successful ]]; then
         dc_msg "*Build Succesful in $(($DIFF2 / 60)) minute(s).*"
       else
@@ -112,10 +112,6 @@ autopilot() {
     fi
   gdrive
 }
-
-# Checks
-grive_chk
-dc_chk
 
 while [ "$#" -ge 1 ]; do
   case $1 in
