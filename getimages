@@ -12,7 +12,7 @@ FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${BUILD_NUM}"
 [[ ! -e ${FI_DOWNLOAD_DIR} ]] && error "Download location ${FI_DOWNLOAD_DIR} does not exist! Exiting..."
 [[ -z ${URL} ]] && error "No URL specified! Exiting..."
 
-cd ${FI_DOWNLOAD_DIR} || return
+cd ${FI_DOWNLOAD_DIR}
 if [[ ! -e ${FI_ZIP} ]]; then
   if ! wget "${URL}"; then error "Download failed! Exiting..."; fi
 fi
