@@ -9,7 +9,6 @@ DEVICE=$(echo "${FI_ZIP}" | sed -n "s/-.*//p")
 BUILD_NUM="$(echo "${FI_ZIP}" | sed -n "s/-factory.*//; s/.*${DEVICE}-//p")"
 FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${BUILD_NUM}"
 
-[[ -z ${FI_SAVE_DIR} ]] && error "Save location not set! Exiting..."
 [[ ! -e ${FI_DOWNLOAD_DIR} ]] && error "Download location ${FI_DOWNLOAD_DIR} does not exist! Exiting..."
 [[ -z ${URL} ]] && error "No URL specified! Exiting..."
 
