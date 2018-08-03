@@ -28,7 +28,7 @@ cp boot.img "${FI_SAVE_DIR}/"
 grive_chk
 if [[ ${GDRIVE} = true ]]; then
   GD_IMAGESURL=http://gg.gg/shagbag913_images
-  cp -r "${FI_SAVE_DIR}" "${GD_FOLDER}/Images/${DEVICE}/"
+  cp -r "${FI_SAVE_DIR}/." "${GD_FOLDER}/Images/${DEVICE}/${BUILD_NUM}"
   cd "${GD_FOLDER}" || return
   grive
   dc_chk
