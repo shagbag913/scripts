@@ -7,7 +7,7 @@ FI_ZIP="$(basename "${URL}")"
 FI_FOLDER="$(echo "${FI_ZIP}" | awk -F-factory '{print $1}')"
 DEVICE=$(echo "${FI_ZIP}" | sed -n "s/-.*//p")
 BUILD_NUM="$(echo "${FI_ZIP}" | sed -n "s/-factory.*//; s/.*${DEVICE}-//p")"
-FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${BUILD_NUM}"
+FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${FI_FOLDER}-images"
 
 [[ ! -e ${FI_DOWNLOAD_DIR} ]] && error "Download location ${FI_DOWNLOAD_DIR} does not exist! Exiting..."
 [[ -z ${URL} ]] && error "No URL specified! Exiting..."
