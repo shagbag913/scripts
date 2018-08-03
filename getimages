@@ -5,6 +5,7 @@ FI_DOWNLOAD_DIR="/media/shagbag913/Roms/factimages"
 URL="$1"
 FI_ZIP="$(basename "${URL}")"
 FI_FOLDER="$(echo "${FI_ZIP}" | awk -F-factory '{print $1}')"
+DEVICE=$(echo "${FI_ZIP}" | sed -n "s/-.*//p")
 BUILD_NUM="$(echo "${FI_ZIP}" | sed -n "s/-factory.*//; s/.*${DEVICE}-//p")"
 FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${BUILD_NUM}"
 
