@@ -8,26 +8,26 @@ GD_URL=http://gg.gg/shagbag913_roms
 GD_TESTURL=http://gg.gg/shagbag913_testbuilds
 
 ## Directories
-gdir1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
-gdir2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
-gdirtest=/media/shagbag913/Roms/gdrive/TestBuilds
+GDIR1=/media/shagbag913/Roms/gdrive/Roms/AospExtended
+GDIR2=/media/shagbag913/Roms/gdrive/Roms/DirtyUnicorns
+GDIRTEST=/media/shagbag913/Roms/gdrive/TestBuilds
 
 # Rom #1 Directory AND name of rom.
-romdir1=/media/shagbag913/Roms/roms/aex
-name1="Aosp Extended"
-romzip1="AospExtended-v5.7-sailfish"
+ROMDIR1=/media/shagbag913/Roms/roms/aex
+NAME1="Aosp Extended"
+ROMZIP1="AospExtended-v5.7-sailfish"
 
 # Rom #2 Directory AND name of rom.
-romdir2=/media/shagbag913/Roms/roms/du
-name2="Dirty Unicorns"
-romzip2=du_sailfish-v12
+ROMDIR2=/media/shagbag913/Roms/roms/du
+NAME2="Dirty Unicorns"
+ROMZIP2=du_sailfish-v12
 
-out="out/target/product/${DEVICE}"
+OUT="out/target/product/${DEVICE}"
 
 # Functions
 sync() {
   info "Syncing Up."
-  if repo sync ${PAR_THREAD} --no-tags --no-clone-bundle --force-sync -f -q; then
+  if repo sync "${PAR_THREAD}" --no-tags --no-clone-bundle --force-sync -f -q; then
     info "Sync Successful!"
   else
     error "Sync Failed!"
@@ -35,79 +35,79 @@ sync() {
 }
 clean() {
   info "Makin Clobber."
-  cd $romdir1
+  cd "${ROMDIR1}"
   make clobber
-  cd $romdir2
+  cd "${ROMDIR2}"
   make clobber
   if dc_chk; then dc_msg "Outputs Cleaned. These builds will take a while :grin:"; fi
 }
 brinch() {
   info "Brunching."
   . build/envsetup.sh
-  brunch ${DEVICE}
+  brunch "${DEVICE}"
 }
 gdrive() {
   if grive_chk; then
-    if [[ $test != true ]]; then
-      cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdir1}
-      cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdir2}
-	  cd ${GD_FOLDER} && grive
+    if [[ "${test}" != true ]]; then
+      cp "$(ls -rt "${ROMDIR1}/${OUT}/${ROMZIP1}"*.zip  | tail -1)" "${GDIR1}"
+      cp "$(ls -rt "${ROMDIR2}/${OUT}/${ROMZIP2}"*.zip  | tail -1)" "${GDIR2}"
+	  cd "${GD_FOLDER}" && grive
       dc_msg "**Google Drive: Builds uploaded. ${GD_URL}**"
     else
-      cp `ls -rt ${romdir1}/${out}/${romzip1}*.zip  | tail -1` ${gdirtest}
-      cp `ls -rt ${romdir2}/${out}/${romzip2}*.zip  | tail -1` ${gdirtest}
-      cd ${GD_FOLDER} && grive
+      cp "$(ls -rt "${ROMDIR1}/${OUT}/${ROMZIP1}"*.zip  | tail -1)" "${GDIRTEST}"
+      cp "$(ls -rt "${ROMDIR2}/${OUT}/${ROMZIP2}"*.zip  | tail -1)" "${GDIRTEST}"
+      cd "${GD_FOLDER}" && grive
       dc_msg "**Google Drive: Test builds uploaded.** *Flash these at your own risk!* ${GD_TESTURL}"
     fi
   fi
 }
 gdrivepurge() {
   info "Cleaning GDrive Directories."
-  for n in ${gdir1} ${gdir2}; do
+  for n in "${GDIR1}" "${GDIR2}"; do
     rm -rf $n/*
   done
-  cd ${GD_FOLDER} 
+  cd "${GD_FOLDER}"
   grive
   info "GDrive folders purged."
   if dc_chk; then dc_msg "**Google Drive: ROM's purged.**"; fi
 }
 gdrivepurgetest() {
   info "Cleaning GDrive Directories."
-  rm -rf ${gdirtest}/*
-  cd ${GD_FOLDER}
+  rm -rf "${GDIRTEST}"/*
+  cd "${GD_FOLDER}"
   grive
   info "GDrive folders purged."
   if dc_chk; then dc_msg "**Google Drive: test builds purged.**"; fi
 }
 autopilot() {
-  cd $romdir1
+  cd "${ROMDIR1}"
   sync
-  if dc_chk; then dc_msg "**Building ${name1}.**"; fi
+  if dc_chk; then dc_msg "**Building ${NAME1}.**"; fi
   DATE_START1=$(date +"%s")
   . build/envsetup.sh
   lunch aosp_sailfish-userdebug
-  make aex ${PAR_THREAD} && rom1=successful
+  make aex "${PAR_THREAD}" && ROM1=successful
   DATE_END1=$(date +"%s")
-  DIFF1=$(($DATE_END1 - $DATE_START1))
+  DIFF1=$((DATE_END1 - DATE_START1))
     if dc_chk; then
-      if [[ $rom1 = successful ]]; then
-        dc_msg "*Build Successful in $(($DIFF1 / 60)) minute(s).*"
+      if [[ "${ROM1}" = successful ]]; then
+        dc_msg "*Build Successful in $((DIFF1 / 60)) minute(s).*"
       else 
-        dc_msg "*Build Failed in $(($DIFF1 / 60)) minute(s).*"
+        dc_msg "*Build Failed in $((DIFF1 / 60)) minute(s).*"
       fi
     fi
-  cd $romdir2
+  cd "${ROMDIR2}"
   sync
-  if dc_chk; then dc_msg "**Building ${name2}.**"; fi
+  if dc_chk; then dc_msg "**Building ${NAME2}.**"; fi
   DATE_START2=$(date +"%s")
-  brinch && rom2=successful
+  brinch && ROM2=successful
   DATE_END2=$(date +"%s")
-  DIFF2=$(($DATE_END2 - $DATE_START2))
+  DIFF2=$((DATE_END2 - DATE_START2))
     if dc_chk; then
-      if [[ $rom2 = successful ]]; then
-        dc_msg "*Build Succesful in $(($DIFF2 / 60)) minute(s).*"
+      if [[ "${ROM2}" = successful ]]; then
+        dc_msg "*Build Succesful in $((DIFF2 / 60)) minute(s).*"
       else
-        dc_msg "*Build Failed in $(($DIFF2 / 60)) minute(s).*"
+        dc_msg "*Build Failed in $((DIFF2 / 60)) minute(s).*"
       fi
     fi
   gdrive
