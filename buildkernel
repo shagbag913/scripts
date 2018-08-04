@@ -18,9 +18,8 @@ done
 if [[ -z "${DIRTY}" ]]; then
   make clean
   make mrproper
+  make shag_defconfig
 fi
-
-make shag_defconfig
 
 if [[ -n "${CLANG}" ]]; then
   info "Building with Clang"
