@@ -3,7 +3,9 @@ source common
 
 if [[ ! -e Makefile ]]; then error "Not in a kernel directory! Exiting..."; fi
 GCC_DIR="/media/shagbag913/Roms/kernel/toolchains/build-tools-gcc/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
-export CCACHE_DIR="${CCACHE_DIR}kernel"
+if [[ ! "${CCACHE_DIR}" =~ "kernel" ]]; then
+  export CCACHE_DIR="${CCACHE_DIR}kernel"
+fi
 export ARCH=arm64
 
 while [[ "${#}" -ge 1 ]]; do
