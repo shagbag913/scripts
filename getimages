@@ -2,37 +2,32 @@
 source common
 
 FI_DOWNLOAD_DIR="/media/shagbag913/Roms/factimages"
-URL="$1"
-FI_ZIP="$(basename "${URL}")"
-FI_FOLDER="$(echo "${FI_ZIP}" | awk -F-factory '{print $1}')"
-DEVICE=$(echo "${FI_ZIP}" | sed -n "s/-.*//p")
-BUILD_NUM="$(echo "${FI_ZIP}" | sed -n "s/-factory.*//; s/.*${DEVICE}-//p")"
-FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/"${FI_FOLDER}-images"
+FI_ZIP=$( basename ${1} )
+FI_FOLDER=$( echo ${FI_ZIP} | awk -F-factory '{print $1}' )
+DEVICE=$( echo ${FI_ZIP} | sed -n 's/-.*//p' )
+BUILD_NUM=$( echo ${FI_ZIP} | sed -n 's/-factory.*//; s/.*${DEVICE}-//p' )
+FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/${FI_FOLDER}-images
 
-[[ ! -e ${FI_DOWNLOAD_DIR} ]] && error "Download location ${FI_DOWNLOAD_DIR} does not exist! Exiting..."
-[[ -z ${URL} ]] && error "No URL specified! Exiting..."
+[[ -z ${1} ]] && error "No URL specified! Exiting..."
 
 cd ${FI_DOWNLOAD_DIR}
-if [[ ! -e ${FI_ZIP} ]]; then
-  if ! wget "${URL}"; then error "Download failed! Exiting..."; fi
+if [[ ! -f ${FI_ZIP} ]]; then
+  if ! wget ${1}; then exit 1; fi
 fi
 
-unzip "${FI_ZIP}"
-cd "${FI_FOLDER}" || return
-unzip "image-${FI_FOLDER}.zip"
-[[ ! -e ${FI_SAVE_DIR} ]] && { mkdir "${FI_SAVE_DIR}"; info "Created directory ${FI_SAVE_DIR}"; }
-cp vendor.img "${FI_SAVE_DIR}/"
-cp boot.img "${FI_SAVE_DIR}/"
+unzip ${FI_ZIP}
+cd ${FI_FOLDER}
+unzip image-${FI_FOLDER}.zip
+mkdir ${FI_SAVE_DIR} && info "Created directory ${FI_SAVE_DIR}"
+
+cp vendor.img ${FI_SAVE_DIR}/
+cp boot.img ${FI_SAVE_DIR}/
+cp bootloader*.img ${FI_SAVE_DIR}/
+cp radio*.img ${FI_SAVE_DIR}/
 
 # TRANSFER IMAGES TO GOOGLE DRIVE
-if grive_chk; then
-  GD_IMAGESURL=http://gg.gg/shagbag913_images
-  cp -r "${FI_SAVE_DIR}/." "${GD_FOLDER}/Images/${DEVICE}/${BUILD_NUM}"
-  grive -p "${GD_FOLDER}"
-  if dc_chk; then
-    dc_msg "**Google Drive: ${BUILD_NUM} vendor and boot images for ${DEVICE} uploaded! ${GD_IMAGESURL}**"
-  fi
-fi
+cp -r ${FI_SAVE_DIR}/. ${GD_FOLDER}/Images/${DEVICE}/${BUILD_NUM}
+grive -p ${GD_FOLDER}
+dc_msg "**Google Drive: ${BUILD_NUM} vendor, boot, bootloader, and radio images for ${DEVICE} uploaded! http://gg.gg/shagbag913_images**"
 
-# REMOVE FACTORY IMAGE ZIP
-rm -rf "${FI_DOWNLOAD_DIR:?}/${FI_ZIP}"
+rm -rf ${FI_DOWNLOAD_DIR}/${FI_ZIP}
