@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 simg2img system.img system.raw
-mkdir system
-su -c 'mount system.raw system
-awk '/ro.bootimage.build.fingerprint/' system/default.prop | sed -e 's/ro.bootimage.build.fingerprint=//g'
-umount system'
-rm -rf system
-rm -rf "${PWD}"/system.raw
+mkdir systemraw
+sudo mount system.raw systemraw
+sudo grep -r ro.bootimage.build.fingerprint systemraw/default.prop
+sudo umount systemraw
+rm -r systemraw
+rm system.raw
