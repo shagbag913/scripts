@@ -1,71 +1,61 @@
 #!/usr/bin/env bash
 
-# source common, download if it does not exist
-if ! source common &>/dev/null; then
-  echo -e "\e[0;34m---------------------------------------------"
-  echo -e "INFO:'common' script not found, downloading.."
-  echo -e "---------------------------------------------\e[0m"
-  wget https://github.com/shagbag913/scripts/raw/master/common &>/dev/null
-  source common
-fi
-
 # Detect installed AUR helper
 for a in trizen pakku yaourt aurman; do
-  if command -v "${a}" &>/dev/null; then
-     AUR_HELPER="${a}" && break
-  fi
+    if command -v $a &>/dev/null; then
+        AUR_HELPER=$a && break
+    fi
 done
 
 if ! command -v git &>/dev/null; then
-  info "Installing 'git'"
-  sudo pacman -S --noconfirm git
+    echo "Installing 'git'"
+    sudo pacman -S --noconfirm git
 fi
 
 # Install pakku if no AUR helper was found
-if [[ -z "${AUR_HELPER}" ]]; then
-  info "No AUR helper was found. Installing pakku.." && sleep 1
-  cd "${TMPDIR:-/tmp}" || exit
-  git clone https://aur.archlinux.org/pakku.git
-  cd pakku && makepkg -si --noconfirm && AUR_HELPER=pakku
+if [[ -z $AUR_HELPER ]]; then
+    echo "No AUR helper was found. Installing pakku.." && sleep 1
+    cd /tmp
+    git clone https://aur.archlinux.org/pakku.git
+    cd pakku && makepkg -si --noconfirm && AUR_HELPER=pakku
 fi
 
 # Install the needed packages to build
-info "Installing all of the necessary packages. This may take a while."
+echo "Installing all of the necessary packages. This may take a while."
 sleep 1
-"${AUR_HELPER}" -S --noconfirm jdk8-openjdk aosp-devel lineageos-devel
+$AUR_HELPER -S --noconfirm jdk8-openjdk aosp-devel lineageos-devel
 
 # symlink python2 to python
-[ ! -d "${HOME}"/bin ] && mkdir "${HOME}"/bin
-[ ! -e "${HOME}"/bin/python ] && ln -s "$(command -v python2)" "${HOME}"/bin/python
+[ ! -d ~/.bin ] && mkdir ~/.bin
+[ ! -f ~/.bin/python ] && ln -s $(command -v python2) ~/.bin/python
 
-if [[ ! $(sed -n "/export USE_CCACHE=1/p" "${HOME}"/.bashrc) ]]; then
-  echo
-  read -p $'\e[0;34mEnable ccache? [yN]:\e[0m ' yn
-  case $yn in
-    Y|y) CCACHE=true;;
-    N|n) info "Not enabling ccache!";;
-  esac
-  if [[ -n "${CCACHE}" ]]; then
-    echo "export USE_CCACHE=1" >> "${HOME}/.bashrc"
-    if [[ ! $(sed -n "/export CCACHE_DIR/p" "${HOME}"/.bashrc &>/dev/null) ]]; then
-      read -p $'\e[0;34mEnter the directory of where you would like ccache to be (leave blank to use default):\e[0m ' ccache_dir
-      if [[ -n "${ccache_dir}" ]]; then
-        echo "export CCACHE_DIR="${ccache_dir}"" >> "${HOME}"/.bashrc
-      else
-        echo -e "${BLUE}No ccache directory entered, using default.${RESTORE}"
-      fi
+if [[ ! $(sed -n '/export USE_CCACHE=1/p' ~/.bashrc) ]]; then
+    echo
+    read -p $'\e[0;34mEnable ccache? [yN]:\e[0m ' yn
+    case $yn in
+        Y|y) CCACHE=true;;
+        N|n) echo "Not enabling ccache!";;
+    esac
+    if [[ -n "${CCACHE}" ]]; then
+        echo "export USE_CCACHE=1" >> ~/.bashrc
+        if [[ ! $(sed -n "/export CCACHE_DIR/p" ~/.bashrc &>/dev/null) ]]; then
+            read -p $'\e[0;34mEnter the directory of where you would like ccache to be (leave blank to use default):\e[0m ' ccache_dir
+            if [[ -n $ccache_dir ]]; then
+                echo "export CCACHE_DIR=$ccache_dir" >> ~/.bashrc
+            else
+                echo -e "No ccache directory entered, using default."
+            fi
+        fi
     fi
-  fi
 fi
 
 # Add stuff to ~/.bashrc if it is not already there
-src=0
-for e in "export LC_ALL=C" 'PATH="${HOME}/bin:${PATH}"'; do
-  if [[ ! $(sed -n "\|${e}|p" "${HOME}"/.bashrc) ]]; then
-    echo "$e" >> "${HOME}"/.bashrc
-    src=$(("${src}"+1))
-    if [[ "${src}" = 1 ]]; then
-      info "Type 'source ~/.bashrc' to complete set up!"
+for e in "export LC_ALL=C" 'PATH=~/.bin:$PATH'; do
+    if [[ ! $(sed -n "\|$e|p" ~/.bashrc) ]]; then
+        echo $e >> ~/.bashrc
+        src=$((src+1))
+        if [[ -z $notif ]]; then
+            echo "Type 'source ~/.bashrc' to complete set up!" && notif=1
+        fi
     fi
-  fi
 done
