@@ -1,33 +1,25 @@
 #!/usr/bin/env bash
-source common
 
-FI_DOWNLOAD_DIR="/media/shagbag913/Roms/factimages"
-FI_ZIP=$( basename ${1} )
-FI_FOLDER=$( echo ${FI_ZIP} | awk -F-factory '{print $1}' )
-DEVICE=$( echo ${FI_ZIP} | sed -n 's/-.*//p' )
-BUILD_NUM=$( echo ${FI_ZIP} | sed -n 's/-factory.*//; s/.*${DEVICE}-//p' )
-FI_SAVE_DIR=${FI_DOWNLOAD_DIR}/${FI_FOLDER}-images
+FI_DOWNLOAD_DIR=/android/factimages
+FI_ZIP=$(basename $1)
+FI_FOLDER=$(echo $FI_ZIP | awk -F-factory '{print $1}')
+DEVICE=$(echo $FI_ZIP | sed -n 's/-.*//p')
+BUILD_NUM=$(echo $FI_ZIP | sed -n "s/-factory.*//; s/.*${DEVICE}-//p")
+FI_SAVE_DIR=$FI_DOWNLOAD_DIR/$FI_FOLDER-images
 
-[[ -z ${1} ]] && error "No URL specified! Exiting..."
+cd $FI_DOWNLOAD_DIR
+wget $1
 
-cd ${FI_DOWNLOAD_DIR}
-if [[ ! -f ${FI_ZIP} ]]; then
-  if ! wget ${1}; then exit 1; fi
-fi
+unzip $FI_ZIP
+cd $FI_FOLDER
+unzip image-$FI_FOLDER.zip
 
-unzip ${FI_ZIP}
-cd ${FI_FOLDER}
-unzip image-${FI_FOLDER}.zip
-mkdir ${FI_SAVE_DIR} && info "Created directory ${FI_SAVE_DIR}"
+mkdir $FI_SAVE_DIR
+for i in vendor.img boot.img bootloader*.img radio*.img; do
+    cp $i $FI_SAVE_DIR/
+done
 
-cp vendor.img ${FI_SAVE_DIR}/
-cp boot.img ${FI_SAVE_DIR}/
-cp bootloader*.img ${FI_SAVE_DIR}/
-cp radio*.img ${FI_SAVE_DIR}/
-
-# TRANSFER IMAGES TO GOOGLE DRIVE
-cp -r ${FI_SAVE_DIR}/. ${GD_FOLDER}/Images/${DEVICE}/${BUILD_NUM}
-grive -p ${GD_FOLDER}
-dc_msg "**Google Drive: ${BUILD_NUM} vendor, boot, bootloader, and radio images for ${DEVICE} uploaded! http://gg.gg/shagbag913_images**"
-
-rm -rf ${FI_DOWNLOAD_DIR}/${FI_ZIP}
+[[ -z $GD_DIR ]] && { echo "ERROR: GDrive folder not set! Aborting"; exit; }
+mkdir $GD_DIR/Public/Images/$DEVICE/$BUILD_NUM
+cp -r $FI_SAVE_DIR/* $GD_DIR/Public/Images/$DEVICE/$BUILD_NUM
+grive -p $GD_DIR
